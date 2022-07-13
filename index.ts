@@ -21,7 +21,6 @@ client.once('ready', () => {
     botOwners: ['346892063314542603', '176118270171021312'],
     typeScript: true,
     ignoreBots: true,
-    ephemeral: false,
   });
   client.user?.setPresence({
     activities: [{ name: 'with node.js', type: 'PLAYING' }],
