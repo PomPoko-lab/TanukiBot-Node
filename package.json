@@ -2,21 +2,27 @@
   "name": "discordbotts-node",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon index.ts"
+    "start": "ts-node index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.8.0",
+    "@distube/ytsr": "^1.1.5",
     "axios": "^0.27.2",
     "cron": "^2.0.0",
     "date-fns": "^2.28.0",
     "discord.js": "^13.8.1",
     "distube": "^3.3.4",
     "dotenv": "^16.0.1",
-    "wokcommands": "^1.5.3"
+    "ffmpeg-static": "^4.4.1",
+    "sodium": "^3.0.2",
+    "wokcommands": "^1.5.3",
+    "ytdl-core": "^4.11.0",
+    "ytpl": "^2.3.0"
   },
   "devDependencies": {
     "@types/cron": "^2.0.0"
