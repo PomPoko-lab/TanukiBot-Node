@@ -15,6 +15,12 @@ export default {
 
     if (!songQueue) return;
 
-    memberChannel === playingChannel && songQueue.stop();
+    memberChannel === playingChannel &&
+      songQueue.stop().then(() =>
+        interaction.reply({
+          content: 'Successfully stopped the music player.',
+          ephemeral: true,
+        })
+      );
   },
 } as ICommand;

@@ -8,7 +8,7 @@ export default {
   testOnly: true,
   guildOnly: true,
 
-  callback: ({ interaction, member, guild }) => {
+  callback: async ({ interaction, member, guild }) => {
     const songQueue = distube.getQueue(guild?.id!);
     const playingChannel = songQueue?.voiceChannel;
     const memberChannel = member.voice.channel;
@@ -16,9 +16,21 @@ export default {
     if (!songQueue) return;
 
     if (memberChannel === playingChannel) {
-      songQueue?.skip().catch((err) => {
-        songQueue.stop();
-      });
+      songQueue
+        ?.skip()
+        .then(() =>
+          interaction.reply({
+            content: 'Playing next song..',
+            ephemeral: true,
+          })
+        )
+        .catch((err) => {
+          songQueue.stop();
+          interaction.reply({
+            content: 'No next song in queue, stopping player now..',
+            ephemeral: true,
+          });
+        });
     }
   },
 } as ICommand;

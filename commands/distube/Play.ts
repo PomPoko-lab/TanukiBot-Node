@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../../index';
+import { GuildTextBasedChannel } from 'discord.js';
 
 export default {
   description: `Play a YoutubeURL or search.`,
@@ -12,14 +13,23 @@ export default {
   expectedArgs: '<url>',
   expectedArgsTypes: ['STRING'],
 
-  callback: ({ interaction, member }) => {
+  callback: async ({ interaction, member }) => {
     const voiceChannel = member.voice.channel;
     const url = interaction.options.getString('url');
+    interaction.deferReply({
+      ephemeral: true,
+    });
 
     if (voiceChannel && url) {
-      distube.play(voiceChannel, url);
+      await distube.play(voiceChannel, url, {
+        member: member,
+        textChannel: interaction.channel as GuildTextBasedChannel,
+      });
+      console.log(`Playing: ${url}`);
     }
 
-    console.log(`Playing: ${url}`);
+    await interaction.editReply({
+      content: 'Successfully sent request',
+    });
   },
 } as ICommand;
