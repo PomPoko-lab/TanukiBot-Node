@@ -1,6 +1,7 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../..';
 import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
+import { verifyValidQueue } from '../../utils/distube/verifyValidQueue';
 
 export default {
   description: `Stops and exits the music player.`,
@@ -9,22 +10,29 @@ export default {
   testOnly: true,
   guildOnly: true,
 
-  callback: ({ interaction, member, guild }) => {
+  callback: async ({ interaction, member, guild }) => {
     const songQueue = distube.getQueue(guild?.id!);
     const playingChannel = songQueue?.voiceChannel;
     const memberChannel = member.voice.channel;
 
     if (!songQueue) return;
 
-    memberChannel === playingChannel &&
-      songQueue.stop().then(() =>
-        interaction.reply({
-          content: 'Successfully stopped the music player.',
-          ephemeral: true,
-        })
-      );
+    if (memberChannel === playingChannel) {
+      await interaction.deferReply({ ephemeral: true });
+      try {
+        await songQueue.stop();
 
+        interaction.editReply({
+          content: 'Successfully stopped the music player.',
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
     // Checks if member is in a voice channel
     verifyValidVoice(memberChannel, interaction);
+
+    // Checks if queue is valid
+    verifyValidQueue(playingChannel, interaction);
   },
 } as ICommand;

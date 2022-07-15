@@ -20,19 +20,23 @@ export default {
     const url = interaction.options.getString('url');
 
     if (voiceChannel && url) {
-      interaction.deferReply({
-        ephemeral: true,
-      });
-      await distube.play(voiceChannel, url, {
-        member: member,
-        textChannel: interaction.channel as GuildTextBasedChannel,
-      });
+      try {
+        await interaction.deferReply({
+          ephemeral: true,
+        });
+        await distube.play(voiceChannel, url, {
+          member: member,
+          textChannel: interaction.channel as GuildTextBasedChannel,
+        });
 
-      await interaction.editReply({
-        content: 'Successfully sent request',
-      });
+        interaction.editReply({
+          content: 'Successfully sent request',
+        });
 
-      console.log(`Playing: ${url}`);
+        console.log(`Playing: ${url}`);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     // Checks if member is in a voice channel

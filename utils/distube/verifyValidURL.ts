@@ -1,7 +1,7 @@
 import { CommandInteraction } from 'discord.js';
 
 export const verifyValidURL = (
-  url: string | null,
+  url: string | null | undefined,
   interaction: CommandInteraction
 ) => {
   !url &&

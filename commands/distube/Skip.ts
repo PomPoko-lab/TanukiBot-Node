@@ -1,6 +1,7 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../..';
 import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
+import { verifyValidQueue } from '../../utils/distube/verifyValidQueue';
 
 export default {
   description: `Skips song.`,
@@ -16,24 +17,25 @@ export default {
 
     if (!songQueue) return;
 
-    memberChannel === playingChannel &&
-      songQueue
-        ?.skip()
-        .then(() =>
-          interaction.reply({
-            content: 'Playing next song..',
-            ephemeral: true,
-          })
-        )
-        .catch((err) => {
-          songQueue.stop();
-          interaction.reply({
-            content: 'No next song in queue, stopping player now..',
-            ephemeral: true,
-          });
+    if (memberChannel === playingChannel) {
+      await interaction.deferReply({ ephemeral: true });
+      try {
+        await songQueue?.skip();
+        interaction.editReply({
+          content: 'Playing next song..',
         });
+      } catch (err) {
+        await songQueue.stop();
+        interaction.editReply({
+          content: 'No next song in queue, stopping player now..',
+        });
+      }
+    }
 
     // Checks if member is in a voice channel
     verifyValidVoice(memberChannel, interaction);
+
+    // Checks if queue is valid
+    verifyValidQueue(playingChannel, interaction);
   },
 } as ICommand;
