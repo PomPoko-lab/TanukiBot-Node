@@ -22,5 +22,12 @@ export default {
           ephemeral: true,
         })
       );
+
+    // Checks if member is in a voice channel
+    !memberChannel &&
+      interaction.reply({
+        content: 'No voice channel detected.',
+        ephemeral: true,
+      });
   },
 } as ICommand;
