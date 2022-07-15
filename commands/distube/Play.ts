@@ -19,6 +19,13 @@ export default {
     const voiceChannel = member.voice.channel;
     const url = interaction.options.getString('url');
 
+    // Checks if member is in a voice channel
+    verifyValidVoice(voiceChannel, interaction);
+
+    // Checks if url is valid,
+    // but already validated through required front-end input
+    verifyValidURL(url, interaction);
+
     if (voiceChannel && url) {
       try {
         await interaction.deferReply({
@@ -38,12 +45,5 @@ export default {
         console.error(err);
       }
     }
-
-    // Checks if member is in a voice channel
-    verifyValidVoice(voiceChannel, interaction);
-
-    // Checks if url is valid,
-    // but already validated through required front-end input
-    verifyValidURL(url, interaction);
   },
 } as ICommand;

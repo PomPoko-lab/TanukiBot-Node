@@ -15,9 +15,13 @@ export default {
     const playingChannel = songQueue?.voiceChannel;
     const memberChannel = member.voice.channel;
 
-    if (!songQueue) return;
+    // Checks if member is in a voice channel
+    verifyValidVoice(memberChannel, interaction);
 
-    if (memberChannel === playingChannel) {
+    // Checks if queue is valid
+    verifyValidQueue(songQueue, interaction);
+
+    if (memberChannel === playingChannel && songQueue) {
       await interaction.deferReply({ ephemeral: true });
       try {
         await songQueue.stop();
@@ -29,10 +33,5 @@ export default {
         console.error(err);
       }
     }
-    // Checks if member is in a voice channel
-    verifyValidVoice(memberChannel, interaction);
-
-    // Checks if queue is valid
-    verifyValidQueue(playingChannel, interaction);
   },
 } as ICommand;
