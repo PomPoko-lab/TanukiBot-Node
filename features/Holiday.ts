@@ -50,6 +50,10 @@ export default async (client: Client) => {
   };
 
   const holidayAnnouncer = async () => {
+    //////////////////////////////////
+    // verify scheduled working
+    console.log('Ran the holiday announcer');
+    //////////////////////////////////
     try {
       // Text channel to insert holiday updates
       const channel = (await client.channels.fetch(channelID)) as TextChannel;
