@@ -1,5 +1,6 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../..';
+import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
 
 export default {
   description: `Skips song.`,
@@ -33,10 +34,6 @@ export default {
         });
 
     // Checks if member is in a voice channel
-    !memberChannel &&
-      interaction.reply({
-        content: 'No voice channel detected.',
-        ephemeral: true,
-      });
+    verifyValidVoice(memberChannel, interaction);
   },
 } as ICommand;

@@ -1,7 +1,7 @@
 import { CommandInteraction, VoiceBasedChannel } from 'discord.js';
 
 export const verifyValidVoice = (
-  voiceChannel: VoiceBasedChannel,
+  voiceChannel: VoiceBasedChannel | null,
   interaction: CommandInteraction
 ) => {
   !voiceChannel &&
