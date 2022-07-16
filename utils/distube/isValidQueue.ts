@@ -1,7 +1,7 @@
 import { CommandInteraction, VoiceBasedChannel } from 'discord.js';
 import { Queue } from 'distube';
 
-export const verifyValidQueue = (
+export const isValidQueue = (
   queue: Queue | null | undefined,
   interaction: CommandInteraction
 ) => {
@@ -10,4 +10,5 @@ export const verifyValidQueue = (
       content: 'No current queue detected.',
       ephemeral: true,
     });
+  return queue;
 };

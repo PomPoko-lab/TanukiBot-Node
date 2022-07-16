@@ -1,8 +1,8 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../../index';
 import { GuildTextBasedChannel } from 'discord.js';
-import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
-import { verifyValidURL } from '../../utils/distube/verifyValidURL';
+import { isValidVoice } from '../../utils/distube/isValidVoice';
+import { isValidUrl } from '../../utils/distube/isValidURL';
 
 export default {
   description: `Play a YoutubeURL or search.`,
@@ -20,11 +20,11 @@ export default {
     const url = interaction.options.getString('url');
 
     // Checks if member is in a voice channel
-    verifyValidVoice(voiceChannel, interaction);
+    if (!isValidVoice(voiceChannel, interaction)) return;
 
     // Checks if url is valid,
     // but already validated through required front-end input
-    verifyValidURL(url, interaction);
+    if (!isValidUrl(url, interaction)) return;
 
     if (voiceChannel && url) {
       try {

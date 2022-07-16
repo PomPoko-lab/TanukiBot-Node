@@ -1,6 +1,6 @@
 import { CommandInteraction, VoiceBasedChannel } from 'discord.js';
 
-export const verifyValidVoice = (
+export const isValidVoice = (
   voiceChannel: VoiceBasedChannel | null | undefined,
   interaction: CommandInteraction
 ) => {
@@ -9,4 +9,5 @@ export const verifyValidVoice = (
       content: 'No voice channel detected.',
       ephemeral: true,
     });
+  return voiceChannel;
 };

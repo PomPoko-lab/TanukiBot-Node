@@ -1,6 +1,6 @@
 import { CommandInteraction } from 'discord.js';
 
-export const verifyValidURL = (
+export const isValidUrl = (
   url: string | null | undefined,
   interaction: CommandInteraction
 ) => {
@@ -9,4 +9,5 @@ export const verifyValidURL = (
       content: 'No valid URL or search detected.',
       ephemeral: true,
     });
+  return url;
 };

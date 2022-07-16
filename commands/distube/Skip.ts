@@ -1,7 +1,7 @@
 import { ICommand } from 'wokcommands';
 import { distube } from '../..';
-import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
-import { verifyValidQueue } from '../../utils/distube/verifyValidQueue';
+import { isValidVoice } from '../../utils/distube/isValidVoice';
+import { isValidQueue } from '../../utils/distube/isValidQueue';
 import { GuildIdResolvable } from 'distube';
 
 export default {
@@ -17,10 +17,13 @@ export default {
     const memberChannel = member.voice.channel;
 
     // Checks if member is in a voice channel
-    verifyValidVoice(memberChannel, interaction);
+    if (!isValidVoice(memberChannel, interaction)) return;
+
+    // Checks if currently playing
+    if (!isValidVoice(playingChannel, interaction)) return;
 
     // Checks if queue is valid
-    verifyValidQueue(songQueue, interaction);
+    if (!isValidQueue(songQueue, interaction)) return;
 
     if (memberChannel === playingChannel && songQueue) {
       await interaction.deferReply({ ephemeral: true });
