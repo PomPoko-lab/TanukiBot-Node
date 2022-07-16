@@ -22,6 +22,7 @@
     "dotenv": "^16.0.1",
     "ffmpeg-static": "^4.4.1",
     "sodium": "^3.0.2",
+    "ts-node": "^10.9.1",
     "wokcommands": "^1.5.3",
     "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0"
