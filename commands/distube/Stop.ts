@@ -2,6 +2,7 @@ import { ICommand } from 'wokcommands';
 import { distube } from '../..';
 import { verifyValidVoice } from '../../utils/distube/verifyValidVoice';
 import { verifyValidQueue } from '../../utils/distube/verifyValidQueue';
+import { GuildIdResolvable } from 'distube';
 
 export default {
   description: `Stops and exits the music player.`,
@@ -11,7 +12,7 @@ export default {
   guildOnly: true,
 
   callback: async ({ interaction, member, guild }) => {
-    const songQueue = distube.getQueue(guild?.id!);
+    const songQueue = distube.getQueue(guild?.id as GuildIdResolvable);
     const playingChannel = songQueue?.voiceChannel;
     const memberChannel = member.voice.channel;
 

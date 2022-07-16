@@ -1,6 +1,5 @@
 import { Client, TextChannel, MessageEmbed } from 'discord.js';
 import axios from 'axios';
-import { format, addDays } from 'date-fns';
 import { CronJob } from 'cron';
 
 export default async (client: Client) => {
@@ -10,11 +9,10 @@ export default async (client: Client) => {
   const currYear = new Date().getFullYear();
   const currMonth = new Date().getMonth() + 1;
   const currDay = new Date().getDate();
-  const days3 = +format(addDays(new Date(), 3), 'd');
   const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
 
   const fetchURL = `${API_URL}${API_KEY}${params}`;
-  const channelID = '996561103054192741';
+  const channelID = '638145442307375143';
 
   const getHoliday = async (day = currDay) => {
     const response = await axios.get(`${fetchURL}&day=${day}`);
@@ -63,7 +61,7 @@ export default async (client: Client) => {
       printHolidays(todaysHolidays, channel);
 
       // Announcement 3 days from now
-      const holidays3: [] = await getHoliday(days3);
+      const holidays3: [] = await getHoliday(3);
       printHolidays(holidays3, channel);
     } catch (err) {
       console.error(err);
