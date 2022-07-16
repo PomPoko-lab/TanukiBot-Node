@@ -2,6 +2,8 @@ import DiscordJS, { Intents } from 'discord.js';
 import WOKCommands from 'wokcommands';
 import { DisTube } from 'distube';
 import { YtDlpPlugin } from '@distube/yt-dlp';
+import { SpotifyPlugin } from '@distube/spotify';
+
 import path from 'path';
 
 import dotenv from 'dotenv';
@@ -25,7 +27,7 @@ export const distube = new DisTube(client, {
   leaveOnFinish: true,
   leaveOnStop: true,
   youtubeDL: false,
-  plugins: [new YtDlpPlugin()],
+  plugins: [new YtDlpPlugin(), new SpotifyPlugin()],
 });
 
 client.once('ready', () => {
