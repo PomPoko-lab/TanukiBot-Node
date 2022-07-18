@@ -19,7 +19,7 @@ export default () => {
         },
         {
           name: 'Next Song:',
-          value: `${queue.songs.length >= 2 ? queue.songs[1].name : 'None'}`,
+          value: `${queue.songs.length > 1 ? queue.songs[1].name : 'None'}`,
         }
       );
 
