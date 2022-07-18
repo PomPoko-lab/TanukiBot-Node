@@ -47,10 +47,25 @@ export default {
                 : 'No additional songs to display'
             }\n`
           )
-          .addField('\u200B', '\u200B')
-          .addField(
-            'Current Song:',
-            `1. [${queueList[0].name}](${queueList[0].url}) [${queueList[0].formattedDuration}]`
+          .addFields(
+            {
+              name: '\u200B',
+              value: '\u200B',
+            },
+            {
+              name: 'Current Song:',
+              value: `1. [${queueList[0].name}](${queueList[0].url}) [${queueList[0].formattedDuration}]`,
+            },
+            {
+              name: 'Songs in queue:',
+              value: `${queueList.length}`,
+              inline: true,
+            },
+            {
+              name: 'Queue duration:',
+              value: `${songQueue.formattedDuration}`,
+              inline: true,
+            }
           );
 
         interaction.editReply({ embeds: [songListEmbed] });
