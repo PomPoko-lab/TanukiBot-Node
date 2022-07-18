@@ -1,5 +1,5 @@
 // When a new playlist is added to the player,
-// Display an embed saying '@username has added @playlistname to the queue. - (@playlistsong number songs)
+// Display an embed saying '@username has added @playlistname to the queue. - (@playlistsong number songs)'
 
 import { distube } from '../..';
 import { MessageEmbed } from 'discord.js';

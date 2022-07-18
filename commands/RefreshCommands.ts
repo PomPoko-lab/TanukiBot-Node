@@ -6,12 +6,18 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
-  callback: ({ interaction, client, guild }) => {
-    client.application?.commands.set([]);
-    guild?.commands.set([]);
-    interaction.reply({
-      content: `Completed refreshing command's cache, please restart the bot.`,
-      ephemeral: true,
-    });
+  callback: async ({ interaction, client, guild }) => {
+    try {
+      await interaction.deferReply({
+        ephemeral: true,
+      });
+      client.application?.commands.set([]);
+      guild?.commands.set([]);
+      interaction.editReply({
+        content: `Completed refreshing command's cache, please restart the bot.`,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   },
 } as ICommand;
