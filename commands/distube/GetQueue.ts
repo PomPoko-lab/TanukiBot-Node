@@ -40,7 +40,13 @@ export default {
         const songListEmbed = new MessageEmbed()
           .setColor('#dfa290')
           .setTitle('Playlist')
-          .setDescription(`${list.join(' ')}\n`)
+          .setDescription(
+            `${
+              list.length !== 0
+                ? list.join(' ')
+                : 'No additional songs to display'
+            }\n`
+          )
           .addField('\u200B', '\u200B')
           .addField(
             'Current Song:',
