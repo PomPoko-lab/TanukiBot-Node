@@ -29,7 +29,7 @@ export default {
     if (memberChannel === playingChannel && songQueue) {
       await interaction.deferReply();
       try {
-        const queueList = await songQueue?.songs;
+        const queueList = songQueue?.songs;
 
         const list = queueList.slice(1, 9).map((song, i) => {
           return `${i + 2}. [${song.name}](${song.url}) [${

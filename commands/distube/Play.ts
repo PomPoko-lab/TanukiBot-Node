@@ -2,7 +2,7 @@ import { ICommand } from 'wokcommands';
 import { distube } from '../../index';
 import { GuildTextBasedChannel } from 'discord.js';
 import { isValidVoice } from '../../utils/distube/isValidVoice';
-import { isValidUrl } from '../../utils/distube/isValidURL';
+import { isValidUrl } from '../../utils/distube/isValidUrl';
 
 export default {
   description: `Play a YoutubeURL or search.`,
