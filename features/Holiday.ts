@@ -1,6 +1,7 @@
 import { Client, TextChannel, MessageEmbed } from 'discord.js';
 import axios from 'axios';
 import { CronJob } from 'cron';
+import { format, addDays } from 'date-fns';
 
 export default async (client: Client) => {
   const API_URL = 'https://holidays.abstractapi.com/v1/?';
@@ -9,9 +10,12 @@ export default async (client: Client) => {
   const currYear = new Date().getFullYear();
   const currMonth = new Date().getMonth() + 1;
   const currDay = new Date().getDate();
+  const days3 = +format(addDays(new Date(), 3), 'd');
   const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
 
   const fetchURL = `${API_URL}${API_KEY}${params}`;
+
+  // Channel ID to send notification
   const channelID = '638145442307375143';
 
   const getHoliday = async (day = currDay) => {
@@ -29,7 +33,7 @@ export default async (client: Client) => {
         date: string;
         type: string;
       }) => {
-        if (holiday.type !== 'public_holiday') return;
+        // if (holiday.type !== 'public_holiday') return;
 
         const embed = new MessageEmbed()
           .setAuthor({
@@ -48,27 +52,30 @@ export default async (client: Client) => {
   };
 
   const holidayAnnouncer = async () => {
-    //////////////////////////////////
-    // verify scheduled working
-    console.log('Ran the holiday announcer');
-    //////////////////////////////////
     try {
       // Text channel to insert holiday updates
       const channel = (await client.channels.fetch(channelID)) as TextChannel;
 
       // Daily Announcement
-      const todaysHolidays: [] = await getHoliday();
-      printHolidays(todaysHolidays, channel);
+      printHolidays(await getHoliday(), channel);
 
       // Announcement 3 days from now
-      const holidays3: [] = await getHoliday(3);
-      printHolidays(holidays3, channel);
+      setTimeout(async () => {
+        printHolidays(await getHoliday(days3), channel);
+        console.log('Completed holidays fetch function');
+      }, 5000);
     } catch (err) {
       console.error(err);
     }
   };
 
-  new CronJob('00 00 00 * * *', holidayAnnouncer, null, true);
+  new CronJob(
+    '00 00 00 * * *',
+    holidayAnnouncer,
+    null,
+    true,
+    'America/Monterrey'
+  );
 };
 
 export const config = {

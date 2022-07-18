@@ -67,17 +67,18 @@ export default {
         const channel = (await client.channels.fetch(channelID)) as TextChannel;
 
         // Daily Announcement
-        let todaysHolidays: [] = await getHoliday();
-        printHolidays(todaysHolidays, channel);
+        printHolidays(await getHoliday(), channel);
 
         // Announcement 3 days from now
-        todaysHolidays: [] = await getHoliday(days3);
-        printHolidays(todaysHolidays, channel);
+        setTimeout(async () => {
+          printHolidays(await getHoliday(days3), channel);
+          console.log('Completed holidays fetch function');
+        }, 5000);
       } catch (err) {
         console.error(err);
       }
     };
-    // await holidayAnnouncer();
+    await holidayAnnouncer();
     await interaction.reply({
       content: 'Sent info',
       ephemeral: true,
