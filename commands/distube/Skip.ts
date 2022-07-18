@@ -26,12 +26,16 @@ export default {
     if (!isValidQueue(songQueue, interaction)) return;
 
     if (memberChannel === playingChannel && songQueue) {
-      await interaction.deferReply({ ephemeral: true });
+      await interaction.deferReply();
       try {
         await songQueue?.skip();
         interaction.editReply({
           content: 'Playing next song..',
         });
+
+        setTimeout(() => {
+          interaction.deleteReply();
+        }, 5000);
       } catch (err) {
         await songQueue.stop();
         interaction.editReply({

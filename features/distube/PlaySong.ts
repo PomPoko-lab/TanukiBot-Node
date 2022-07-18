@@ -12,16 +12,10 @@ export default () => {
         name: 'Now Playing:',
       })
       .setThumbnail(song.thumbnail!)
-      .addFields(
-        {
-          name: 'Requested by: ',
-          value: song.user?.username as string,
-        },
-        {
-          name: 'Next Song:',
-          value: `${queue.songs.length > 1 ? queue.songs[1].name : 'None'}`,
-        }
-      );
+      .addField('Requested by:', song.user?.username as string);
+
+    queue.songs.length > 1 &&
+      message.addField('Next Song:', queue.songs[1].name as string);
 
     queue.textChannel?.send({
       embeds: [message],

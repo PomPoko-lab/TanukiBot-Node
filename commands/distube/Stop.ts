@@ -26,11 +26,10 @@ export default {
     if (!isValidQueue(songQueue, interaction)) return;
 
     if (memberChannel === playingChannel && songQueue) {
-      await interaction.deferReply({ ephemeral: true });
       try {
         await songQueue.stop();
 
-        interaction.editReply({
+        interaction.reply({
           content: 'Successfully stopped the music player.',
         });
       } catch (err) {

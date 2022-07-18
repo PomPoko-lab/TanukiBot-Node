@@ -28,17 +28,13 @@ export default {
 
     if (voiceChannel && url) {
       try {
-        await interaction.deferReply({
-          ephemeral: true,
-        });
+        await interaction.deferReply();
         await distube.play(voiceChannel, url, {
           member: member,
           textChannel: interaction.channel as GuildTextBasedChannel,
         });
 
-        interaction.editReply({
-          content: 'Successfully sent request',
-        });
+        interaction.deleteReply();
 
         console.log(`Playing: ${url}`);
       } catch (err) {
