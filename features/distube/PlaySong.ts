@@ -6,7 +6,7 @@ export default () => {
   distube.on('playSong', (queue: Queue, song: Song) => {
     const message = new MessageEmbed()
       .setColor('#dfa290')
-      .setTitle(`${song.name} : (${song.formattedDuration})`)
+      .setTitle(`[${song.formattedDuration}] - ${song.name}`)
       .setURL(song.url)
       .setAuthor({
         name: 'Now Playing:',
@@ -21,8 +21,7 @@ export default () => {
           name: 'Next Song:',
           value: `${queue.songs.length >= 2 ? queue.songs[1].name : 'None'}`,
         }
-      )
-      .setTimestamp();
+      );
 
     queue.textChannel?.send({
       embeds: [message],
