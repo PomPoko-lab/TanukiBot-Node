@@ -1,9 +1,8 @@
 import { MessageEmbed } from 'discord.js';
-import { Queue, Song } from 'distube';
 import { distube } from '../..';
 
 export default () => {
-  distube.on('playSong', (queue: Queue, song: Song) => {
+  distube.on('playSong', (queue, song) => {
     const message = new MessageEmbed()
       .setColor('#dfa290')
       .setTitle(`[${song.formattedDuration}] - ${song.name}`)
@@ -19,9 +18,6 @@ export default () => {
 
     queue.textChannel?.send({
       embeds: [message],
-      allowedMentions: {
-        users: [],
-      },
     });
   });
 };
