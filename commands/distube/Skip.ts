@@ -33,7 +33,9 @@ export default {
           content: 'Playing next song..',
         });
 
-        setTimeout(() => interaction.deleteReply, 5000);
+        setTimeout(() => {
+          interaction.deleteReply();
+        }, 5000);
       } catch (err) {
         await songQueue.stop();
         interaction.editReply({
