@@ -9,8 +9,8 @@ export default async (client: Client) => {
   const country = 'US';
   const currYear = new Date().getFullYear();
   const currMonth = new Date().getMonth() + 1;
-  const currDay = new Date().getDate();
-  const days3 = +format(addDays(new Date(), 3), 'd');
+  const currDay = +format(addDays(new Date(), 1), 'd');
+  const days3 = +format(addDays(new Date(), 4), 'd');
   const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
 
   const fetchURL = `${API_URL}${API_KEY}${params}`;
