@@ -12,7 +12,7 @@ export default () => {
         name: 'New Song Added',
       })
       .setDescription(
-        `<@${song.user?.id}> has added '${song.name}' to the queue.`
+        `<@${song.user?.id}> has added '${song.name?.trim()}' to the queue.`
       );
 
     queue.textChannel?.send({

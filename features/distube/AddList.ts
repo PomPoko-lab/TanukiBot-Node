@@ -12,7 +12,11 @@ export default () => {
         name: 'New Playlist Added',
       })
       .setDescription(
-        `<@${playlist.user?.id}> has added '${playlist.name}' to the queue. - (${playlist.songs.length} songs)`
+        `<@${
+          playlist.user?.id
+        }> has added '${playlist.name.trim()}' to the queue. - (${
+          playlist.songs.length
+        } songs)`
       );
 
     queue.textChannel?.send({

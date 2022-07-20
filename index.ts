@@ -1,5 +1,6 @@
 import DiscordJS, { Intents } from 'discord.js';
 import WOKCommands from 'wokcommands';
+import mongoose from 'mongoose';
 import { DisTube } from 'distube';
 import { YtDlpPlugin } from '@distube/yt-dlp';
 import { SpotifyPlugin } from '@distube/spotify';
@@ -30,7 +31,7 @@ export const distube = new DisTube(client, {
   plugins: [new YtDlpPlugin(), new SpotifyPlugin()],
 });
 
-client.once('ready', () => {
+client.once('ready', async () => {
   new WOKCommands(client, {
     commandsDir: path.join(__dirname, 'commands'),
     featuresDir: path.join(__dirname, 'features'),
@@ -39,6 +40,10 @@ client.once('ready', () => {
     typeScript: true,
     ignoreBots: true,
     ephemeral: false,
+    mongoUri: process.env.MONGO_URI,
+    dbOptions: {
+      keepAlive: true,
+    },
   }).setDefaultPrefix('.');
   client.user?.setPresence({
     activities: [{ name: 'with node.js', type: 'PLAYING' }],
