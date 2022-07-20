@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands';
 import mongoose from 'mongoose';
-import RemindersSchema from '../Models/RemindersSchema';
+import RemindersModel from '../Models/RemindersModel';
 
 // Holiday API required imports
 // import { MessageEmbed, TextChannel } from 'discord.js';
@@ -8,7 +8,15 @@ import RemindersSchema from '../Models/RemindersSchema';
 // import { format, addDays } from 'date-fns';
 
 import dotenv from 'dotenv';
+import { MessageEmbed } from 'discord.js';
 dotenv.config;
+
+interface Reminder {
+  userId: string;
+  description: string;
+  time: string;
+  repeatedTimes: number;
+}
 
 export default {
   category: 'Testing',
@@ -19,54 +27,34 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
-  options: [
-    {
-      name: 'description',
-      description: 'Description of your reminder, what to be reminded of',
-      required: true,
-      type: 'STRING',
-    },
-    {
-      name: 'time',
-      description: 'Time to execute the reminder in XPM/AM. Example: 7PM',
-      required: true,
-      type: 'STRING',
-    },
-    {
-      name: 'repeatnum',
-      description:
-        'Number of times to repeat the reminder. Example: 2, forever',
-      required: true,
-      type: 'INTEGER',
-    },
-  ],
-  callback: async ({ interaction, client, args }) => {
-    const description = interaction.options.getString('description');
-    let time = interaction.options.getString('time');
-    const repeatNum = +args.slice(-1);
-
-    if (!(time?.includes('PM') || time?.includes('AM')))
-      return interaction.reply({
-        content: 'Entered time was not valid.',
-        ephemeral: true,
+  callback: async ({ interaction, channel }) => {
+    const sendEmbed = (task: Reminder) => {
+      const reminderEmbed = new MessageEmbed({
+        color: '#dfa290',
+        title: 'Daily reminder',
+        // change interaction id to guild/channel user id
+        description: `<@${task.userId}>'s reminder`,
+        fields: [
+          {
+            name: '\u200b',
+            value: task.description,
+          },
+        ],
       });
 
-    // Converts PM/AM to 24Hour times
-    if (time?.includes('PM')) {
-      time = `${+time.slice(0, 2) === 12 ? 12 : +time.charAt(0) + 12}`;
-    } else {
-      time = `${+time.slice(0, 2) === 12 ? 0 : time.charAt(0)}`;
-    }
+      channel.send({
+        embeds: [reminderEmbed],
+      });
+    };
 
     try {
-      const reminder = new RemindersSchema({
-        description,
-        time,
-        repeatedTimes: repeatNum,
+      // change interaction id to guild/channel user id
+      const remindersArr = await RemindersModel.find({
+        userId: interaction.user.id,
       });
-      interaction.reply({
-        content: `${time}`,
-        ephemeral: true,
+
+      remindersArr.forEach((r) => {
+        sendEmbed(r as Reminder);
       });
     } catch (err) {
       console.error(err);
