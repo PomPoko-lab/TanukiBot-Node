@@ -36,7 +36,7 @@ client.once('ready', async () => {
     commandsDir: path.join(__dirname, 'commands'),
     featuresDir: path.join(__dirname, 'features'),
     testServers: ['638145442307375139', '384186251693260800'],
-    botOwners: ['346892063314542603', '176118270171021312'],
+    botOwners: ['346892063314542603'],
     typeScript: true,
     ignoreBots: true,
     ephemeral: false,

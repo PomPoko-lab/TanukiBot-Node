@@ -6,6 +6,7 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
+  ownerOnly: true,
   callback: async ({ interaction, client, guild }) => {
     try {
       await interaction.deferReply({
