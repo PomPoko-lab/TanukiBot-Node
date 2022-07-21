@@ -4,21 +4,18 @@ import { CronJob } from 'cron';
 import { format, addDays } from 'date-fns';
 
 export default async (client: Client) => {
+  // Channel ID to send notification
+  const channelID = '638145442307375143';
   const API_URL = 'https://holidays.abstractapi.com/v1/?';
   const API_KEY = `api_key=${process.env.HOLIDAY_API}`;
   const country = 'US';
-  const currYear = new Date().getFullYear();
-  const currMonth = new Date().getMonth() + 1;
-  const currDay = new Date().getDay();
-  const days3 = +format(addDays(new Date(), 3), 'd');
-  const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
 
-  const fetchURL = `${API_URL}${API_KEY}${params}`;
+  const getHoliday = async (day = new Date().getDay()) => {
+    const currYear = new Date().getFullYear();
+    const currMonth = new Date().getMonth() + 1;
+    const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
+    const fetchURL = `${API_URL}${API_KEY}${params}`;
 
-  // Channel ID to send notification
-  const channelID = '638145442307375143';
-
-  const getHoliday = async (day = currDay) => {
     const response = await axios.get(`${fetchURL}&day=${day}`);
     if (response.status !== 200) return;
     return response.data;
@@ -60,9 +57,10 @@ export default async (client: Client) => {
       printHolidays(await getHoliday(), channel);
 
       // Announcement 3 days from now
+
       setTimeout(async () => {
+        const days3 = +format(addDays(new Date(), 3), 'd');
         printHolidays(await getHoliday(days3), channel);
-        console.log('Completed holidays fetch function');
       }, 5000);
     } catch (err) {
       console.error(err);
