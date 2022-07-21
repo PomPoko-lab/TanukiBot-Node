@@ -54,6 +54,7 @@ Currently not available..
 ## Built with
 
 - NodeJS
+- MongoDB
 - WOKCommands
 - DisTube
 
