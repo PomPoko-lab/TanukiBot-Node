@@ -31,7 +31,7 @@ Project development currently in progress.
 - Bot Web dashboard
 
 ## Screenshots
-Currently not available..
+![Image of the bot](https://pompoko.io/assets/Discordbot.webp)
 
 ## Project Roadmap
 
