@@ -1,22 +1,9 @@
-import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
 
-// Holiday API required imports
-// import { MessageEmbed, TextChannel } from 'discord.js';
-// import axios from 'axios';
-// import { format, addDays } from 'date-fns';
-
 import dotenv from 'dotenv';
 dotenv.config;
-
-interface GymDay {
-  userId: string;
-  dayNumber: number;
-  dayCategory: string;
-  routine: [];
-  skippedLast: boolean;
-}
 
 export default {
   category: 'Testing',
@@ -28,87 +15,88 @@ export default {
   testOnly: true,
   guildOnly: true,
   callback: async ({ interaction, channel }) => {
-    // Adding a Gym day
-
-    interaction.reply({
-      content: `Starting new workout process..`,
-    });
-
     try {
-      const filter = (m: Message) => m.member?.id === interaction.user.id;
+      // Get Gym Days
 
-      // User input for gym day category
-      channel.send('What categories will this gym day be for? (15s)');
-      const gymDayCategory = (
-        await interaction.channel?.awaitMessages({
+      await interaction.deferReply();
+
+      const gymDays = await GymDayModel.find({ userId: interaction.user.id });
+
+      interaction.editReply(
+        `You have ${gymDays.length} days recorded. Input a day number to view. (15s) Example: 2`
+      );
+
+      const filter = (message: Message) =>
+        message.member?.id === interaction.user.id;
+
+      const reply = +(
+        await channel.awaitMessages({
           filter,
           time: 15000,
           max: 1,
           errors: ['time'],
         })
-      )?.first()?.content;
+      ).first()?.content!;
 
-      const routine = [];
+      if (!reply) throw Error('No replies detected.');
 
-      // User input for routine
+      const selectedDay = gymDays.find((day) => day.dayNumber === reply);
 
-      channel.send(
-        `We're now adding the workouts to your routine for that day.`
-      );
+      if (!selectedDay) throw Error('No selected day was found.');
 
-      while (true) {
-        channel.send(
-          `Please enter a workout comma separated by sets and reps. (15s) Example: Bench Press, 3, 12`
-        );
-        const res2 = await interaction.channel?.awaitMessages({
-          filter,
-          time: 15000,
-          max: 1,
-          errors: ['time'],
-        });
-
-        if (!res2 || res2.first()?.content.trim().toLowerCase() === 'exit')
-          break;
-
-        // If array is at least 3 (2 length), add workout obj to routine Arr
-        const r = res2?.first()?.content.trim().toLowerCase().split(',');
-        if (!r || r.length === 0) {
-          return channel.send('Inputs were invalid.');
-        } else if (r.length === 3) {
-          channel.send(`Stored input. To quit inputting, enter 'exit'.`);
-          const workout = {
-            exercise: r[0].trim().toLowerCase(),
-            sets: r[1].trim(),
-            reps: r[2].trim(),
-          };
-
-          routine.push(workout);
-        }
-      }
-
-      if (routine.length === 0) {
-        throw Error(`Couldn't find input routines.`);
-      }
-
-      // Get userid gym days to add into dayNumber
-      const dayNumber =
-        (await GymDayModel.find({ userId: interaction.user.id })).length + 1;
-
-      // Prepping the gymDay model to store into DB
-
-      const gymDay = new GymDayModel({
-        userId: interaction.user.id,
-        dayNumber,
-        dayCategory: gymDayCategory,
-        routine,
-        skippedLast: false,
+      const embed = new MessageEmbed({
+        color: '#dfa290',
+        title: `Day ${selectedDay.dayNumber}`,
+        fields: [
+          {
+            name: 'Category',
+            value: `${selectedDay.dayCategory}`,
+            inline: true,
+          },
+          {
+            name: 'Exercises',
+            value: `${selectedDay.routine.length}`,
+            inline: true,
+          },
+          {
+            name: '\u200B',
+            value: '\u200B',
+          },
+        ],
       });
 
-      await gymDay.save();
-
-      channel.send(
-        'Successfully saved your gym day. Implement embed of details.'
+      selectedDay.routine.forEach((w) =>
+        embed.addField(
+          w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
+          `${w.sets} sets of ${w.reps} reps`
+        )
       );
+
+      await channel.send(`Here's the output of your selected day.`);
+      channel.send({
+        embeds: [embed],
+      });
+
+      // Fetches and displays all days, bad for performance.
+      // gymDays.forEach((day) => {
+      //   const embed = new MessageEmbed({
+      //     color: '#dfa290',
+      //     title: `Day ${day.dayNumber}`,
+      //     fields: [
+      //       {
+      //         name: 'Category',
+      //         value: `${day.dayCategory}`,
+      //       },
+      //     ],
+      //   });
+
+      //   day.routine.forEach((w) =>
+      //     embed.addField(
+      //       w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
+      //       `${w.sets} of ${w.reps} reps.`
+      //     )
+      //   );
+      // });
     } catch (err) {
       console.error(err);
     }
