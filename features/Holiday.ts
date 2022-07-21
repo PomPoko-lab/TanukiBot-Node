@@ -68,7 +68,7 @@ export default async (client: Client) => {
   };
 
   new CronJob(
-    '05 00 00 * * *',
+    '00 00 00 * * *',
     holidayAnnouncer,
     null,
     true,
