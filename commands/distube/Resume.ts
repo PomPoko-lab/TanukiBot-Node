@@ -28,7 +28,7 @@ export default {
     if (memberChannel === playingChannel && songQueue) {
       await interaction.deferReply();
       try {
-        await songQueue?.resume();
+        songQueue?.resume();
         interaction.editReply({
           content: 'Successfully resumed the queue',
         });
