@@ -1,17 +1,10 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message } from 'discord.js';
 import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
+import getGymDayEmbed from '../Views/getGymDayEmbed';
 
 import dotenv from 'dotenv';
 dotenv.config;
-
-// interface GymDay {
-//   userId: string;
-//   dayNumber: number;
-//   dayCategory: string;
-//   routine: [];
-//   skippedLast: boolean;
-// }
 
 export default {
   category: 'Workout',
@@ -90,39 +83,13 @@ export default {
         dayNumber,
         dayCategory: gymDayCategory,
         routine,
-        skippedLast: false,
+        completed: false,
       });
 
       await gymDay.save();
 
       // Generates an embed and outputs stored values to the user
-      const embed = new MessageEmbed({
-        color: '#dfa290',
-        title: `Day ${gymDay.dayNumber}`,
-        fields: [
-          {
-            name: 'Category',
-            value: `${gymDay.dayCategory}`,
-            inline: true,
-          },
-          {
-            name: 'Exercises',
-            value: `${gymDay.routine.length}`,
-            inline: true,
-          },
-          {
-            name: '\u200B',
-            value: '\u200B',
-          },
-        ],
-      });
-
-      gymDay.routine.forEach((w) =>
-        embed.addField(
-          w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
-          `${w.sets} sets of ${w.reps} reps`
-        )
-      );
+      const embed = getGymDayEmbed(gymDay);
 
       await channel.send(`Here's the output of your day.`);
       await channel.send({
@@ -134,11 +101,3 @@ export default {
     }
   },
 } as ICommand;
-// Day 2
-// Shoulders and back
-// 5 exercises
-// Overhead Press 40x12x3
-// Dumbbell flyes 20x12x3
-// Supermans 3x 12
-// Bent over rows 20x12x3
-// Lateral raises  15x12x3

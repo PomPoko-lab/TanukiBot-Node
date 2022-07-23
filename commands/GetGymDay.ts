@@ -1,6 +1,7 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message } from 'discord.js';
 import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
+import GymDayEmbed from '../Views/getGymDayEmbed';
 
 import dotenv from 'dotenv';
 dotenv.config;
@@ -39,33 +40,7 @@ export default {
 
       if (!selectedDay) throw Error('No selected day was found.');
 
-      const embed = new MessageEmbed({
-        color: '#dfa290',
-        title: `Day ${selectedDay.dayNumber}`,
-        fields: [
-          {
-            name: 'Category',
-            value: `${selectedDay.dayCategory}`,
-            inline: true,
-          },
-          {
-            name: 'Exercises',
-            value: `${selectedDay.routine.length}`,
-            inline: true,
-          },
-          {
-            name: '\u200B',
-            value: '\u200B',
-          },
-        ],
-      });
-
-      selectedDay.routine.forEach((w) =>
-        embed.addField(
-          w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
-          `${w.sets} sets of ${w.reps} reps`
-        )
-      );
+      const embed = GymDayEmbed(selectedDay);
 
       await channel.send(`Here's the output of your selected day.`);
       channel.send({

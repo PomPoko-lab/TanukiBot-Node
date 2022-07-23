@@ -1,6 +1,6 @@
-import { Message, MessageEmbed } from 'discord.js';
 import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
+import getGymDayEmbed from '../Views/getGymDayEmbed';
 
 import dotenv from 'dotenv';
 dotenv.config;
@@ -16,87 +16,35 @@ export default {
   guildOnly: true,
   callback: async ({ interaction, channel }) => {
     try {
-      // Get Gym Days
-
       await interaction.deferReply();
-
-      const gymDays = await GymDayModel.find({ userId: interaction.user.id });
-
-      interaction.editReply(
-        `You have ${gymDays.length} days recorded. Input a day number to view. (15s) Example: 2`
-      );
-
-      const filter = (message: Message) =>
-        message.member?.id === interaction.user.id;
-
-      const reply = +(
-        await channel.awaitMessages({
-          filter,
-          time: 15000,
-          max: 1,
-          errors: ['time'],
-        })
-      ).first()?.content!;
-
-      if (!reply) throw Error('No replies detected.');
-
-      const selectedDay = gymDays.find((day) => day.dayNumber === reply);
-
-      if (!selectedDay) throw Error('No selected day was found.');
-
-      const embed = new MessageEmbed({
-        color: '#dfa290',
-        title: `Day ${selectedDay.dayNumber}`,
-        fields: [
-          {
-            name: 'Category',
-            value: `${selectedDay.dayCategory}`,
-            inline: true,
-          },
-          {
-            name: 'Exercises',
-            value: `${selectedDay.routine.length}`,
-            inline: true,
-          },
-          {
-            name: '\u200B',
-            value: '\u200B',
-          },
-        ],
+      const initialCheck = await GymDayModel.findOne({
+        userId: interaction.user.id,
+        completed: false,
       });
 
-      selectedDay.routine.forEach((w) =>
-        embed.addField(
-          w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
-          `${w.sets} sets of ${w.reps} reps`
-        )
-      );
+      if (!initialCheck) {
+        await GymDayModel.updateMany(
+          { userId: interaction.user.id },
+          { completed: false }
+        );
+      }
 
-      await channel.send(`Here's the output of your selected day.`);
+      const nextGymDay = await GymDayModel.findOne({
+        userId: interaction.user.id,
+        completed: false,
+      });
+
+      const embed = getGymDayEmbed(nextGymDay!);
+
+      interaction.editReply({
+        content: `Your work out routine for today.`,
+      });
+
       channel.send({
         embeds: [embed],
       });
 
-      // Fetches and displays all days, bad for performance.
-      // gymDays.forEach((day) => {
-      //   const embed = new MessageEmbed({
-      //     color: '#dfa290',
-      //     title: `Day ${day.dayNumber}`,
-      //     fields: [
-      //       {
-      //         name: 'Category',
-      //         value: `${day.dayCategory}`,
-      //       },
-      //     ],
-      //   });
-
-      //   day.routine.forEach((w) =>
-      //     embed.addField(
-      //       w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
-      //       `${w.sets} of ${w.reps} reps.`
-      //     )
-      //   );
-      // });
+      // Add Completed embed function
     } catch (err) {
       console.error(err);
     }
