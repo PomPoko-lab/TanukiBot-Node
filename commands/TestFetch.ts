@@ -12,44 +12,25 @@ export default {
   testOnly: true,
   guildOnly: true,
   callback: async ({ interaction, channel }) => {
-    // Gets the next Gym Day, if all completed, resets all the false
-    // and returns next day
-    const getNextDay = async () => {
-      let nextDay = await GymDayModel.findOne({
-        userId: interaction.user.id,
-        completed: false,
-      });
-
-      if (!nextDay) {
-        await GymDayModel.updateMany(
-          {
-            userId: interaction.user.id,
-            completed: true,
-          },
-          { completed: false }
-        );
-
-        return await GymDayModel.findOne({
-          userId: interaction.user.id,
-          completed: false,
-        });
-      }
-
-      return nextDay;
-    };
+    // Completed workout
 
     try {
       await interaction.deferReply();
-      const nextGymDay = await getNextDay();
+      const updateCompletedDay = await GymDayModel.findOneAndUpdate(
+        {
+          userId: interaction.user.id,
+          completed: false,
+        },
+        { completed: true }
+      );
 
-      const embed = getGymDayEmbed(nextGymDay!);
+      if (!updateCompletedDay)
+        return interaction.editReply(
+          `Couldn't record your gym session, run getGymSession first before running this command.`
+        );
 
       await interaction.editReply({
-        content: `Your work out routine for today.`,
-      });
-
-      interaction.followUp({
-        embeds: [embed],
+        content: `Successfully recorded your gym session for the day.`,
       });
     } catch (err) {
       console.error(err);
