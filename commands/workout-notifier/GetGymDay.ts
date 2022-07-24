@@ -37,7 +37,7 @@ export default {
 
       if (!selectedDay) throw Error('No selected day was found.');
 
-      const embed = GymDayEmbed(selectedDay);
+      const embed = getGymDayEmbed(selectedDay);
 
       await channel.send(`Here's the output of your selected day.`);
       channel.send({
