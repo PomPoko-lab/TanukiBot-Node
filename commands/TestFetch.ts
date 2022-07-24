@@ -15,24 +15,35 @@ export default {
   testOnly: true,
   guildOnly: true,
   callback: async ({ interaction, channel }) => {
-    try {
-      await interaction.deferReply();
-      const initialCheck = await GymDayModel.findOne({
+    // Gets the next Gym Day, if all completed, resets all the false
+    // and returns next day
+    const getNextDay = async () => {
+      let nextDay = await GymDayModel.findOne({
         userId: interaction.user.id,
         completed: false,
       });
 
-      if (!initialCheck) {
+      if (!nextDay) {
         await GymDayModel.updateMany(
-          { userId: interaction.user.id },
+          {
+            userId: interaction.user.id,
+            completed: true,
+          },
           { completed: false }
         );
+
+        return await GymDayModel.findOne({
+          userId: interaction.user.id,
+          completed: false,
+        });
       }
 
-      const nextGymDay = await GymDayModel.findOne({
-        userId: interaction.user.id,
-        completed: false,
-      });
+      return nextDay;
+    };
+
+    try {
+      await interaction.deferReply();
+      const nextGymDay = await getNextDay();
 
       const embed = getGymDayEmbed(nextGymDay!);
 
