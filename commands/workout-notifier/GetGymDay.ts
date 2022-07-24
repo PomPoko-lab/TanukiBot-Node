@@ -43,27 +43,6 @@ export default {
       channel.send({
         embeds: [embed],
       });
-
-      // Fetches and displays all days, bad for performance.
-      // gymDays.forEach((day) => {
-      //   const embed = new MessageEmbed({
-      //     color: '#dfa290',
-      //     title: `Day ${day.dayNumber}`,
-      //     fields: [
-      //       {
-      //         name: 'Category',
-      //         value: `${day.dayCategory}`,
-      //       },
-      //     ],
-      //   });
-
-      //   day.routine.forEach((w) =>
-      //     embed.addField(
-      //       w.exercise.replace(w.exercise[0], w.exercise[0].toUpperCase()),
-      //       `${w.sets} of ${w.reps} reps.`
-      //     )
-      //   );
-      // });
     } catch (err) {
       console.error(err);
     }
