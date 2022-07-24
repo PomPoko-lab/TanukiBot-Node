@@ -16,6 +16,7 @@ export default {
 
     try {
       await interaction.deferReply();
+
       const updateCompletedDay = await GymDayModel.findOneAndUpdate(
         {
           userId: interaction.user.id,
@@ -24,10 +25,12 @@ export default {
         { completed: true }
       );
 
-      if (!updateCompletedDay)
-        return interaction.editReply(
+      if (!updateCompletedDay) {
+        await interaction.editReply(
           `Couldn't record your gym session, run getGymSession first before running this command.`
         );
+        return;
+      }
 
       await interaction.editReply({
         content: `Successfully recorded your gym session for the day.`,
