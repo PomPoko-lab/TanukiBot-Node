@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands';
-import GymDayModel from '../Models/GymDayModel';
+import GymDayModel from '../../Models/GymDayModel';
 
 export default {
   category: 'Workout',
