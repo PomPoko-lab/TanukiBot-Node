@@ -1,6 +1,7 @@
 import { Message } from 'discord.js';
 import { ICommand } from 'wokcommands';
 import GymDayModel from '../../Models/GymDayModel';
+import getGymDayEmbed from '../../Views/getGymDayEmbed';
 
 export default {
   category: 'Workout',
