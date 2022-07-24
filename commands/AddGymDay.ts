@@ -3,9 +3,6 @@ import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
 import getGymDayEmbed from '../Views/getGymDayEmbed';
 
-import dotenv from 'dotenv';
-dotenv.config;
-
 export default {
   category: 'Workout',
   description: 'Adds a gym day to daily work outs notifier.',

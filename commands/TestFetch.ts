@@ -2,9 +2,6 @@ import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
 import getGymDayEmbed from '../Views/getGymDayEmbed';
 
-import dotenv from 'dotenv';
-dotenv.config;
-
 export default {
   category: 'Testing',
   description: 'For testing purposes. DO NOT USE',
@@ -47,15 +44,13 @@ export default {
 
       const embed = getGymDayEmbed(nextGymDay!);
 
-      interaction.editReply({
+      await interaction.editReply({
         content: `Your work out routine for today.`,
       });
 
-      channel.send({
+      interaction.followUp({
         embeds: [embed],
       });
-
-      // Add Completed embed function
     } catch (err) {
       console.error(err);
     }

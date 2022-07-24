@@ -3,9 +3,6 @@ import { ICommand } from 'wokcommands';
 import GymDayModel from '../Models/GymDayModel';
 import GymDayEmbed from '../Views/getGymDayEmbed';
 
-import dotenv from 'dotenv';
-dotenv.config;
-
 export default {
   category: 'Workout',
   description: 'Gets information about a gym day.',
