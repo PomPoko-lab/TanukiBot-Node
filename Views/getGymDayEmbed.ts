@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { GymDay } from '../Models/GymDayModel';
+import { GymDay } from '../models/GymDayModel';
 
 export default (gymDay: GymDay) => {
   const embed = new MessageEmbed({

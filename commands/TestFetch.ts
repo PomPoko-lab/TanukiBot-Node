@@ -1,6 +1,6 @@
 import { ICommand } from 'wokcommands';
-import GymDayModel from '../Models/GymDayModel';
-import getGymDayEmbed from '../Views/getGymDayEmbed';
+import getNextGymSession from '../../utils/workout/getNextGymSession';
+import { TextChannel } from 'discord.js';
 
 export default {
   category: 'Testing',
@@ -11,33 +11,11 @@ export default {
   slash: true,
   testOnly: true,
   guildOnly: true,
-  callback: async ({ interaction, channel }) => {
-    // Completed workout
+  callback: async ({ interaction, channel, guild }) => {
+    const CHANNEL_ID = '638145442307375143';
+    const channel = (await guild?.channels.fetch(CHANNEL_ID)) as TextChannel;
 
-    try {
-      await interaction.deferReply();
-
-      const updateCompletedDay = await GymDayModel.findOneAndUpdate(
-        {
-          userId: interaction.user.id,
-          completed: false,
-        },
-        { completed: true }
-      );
-
-      if (!updateCompletedDay) {
-        await interaction.editReply(
-          `Couldn't record your gym session, run getGymSession first before running this command.`
-        );
-        return;
-      }
-
-      await interaction.editReply({
-        content: `Successfully recorded your gym session for the day.`,
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    getNextGymSession(interaction.user, channel);
   },
 } as ICommand;
 
