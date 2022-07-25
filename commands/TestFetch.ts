@@ -1,5 +1,5 @@
 import { ICommand } from 'wokcommands';
-import getNextGymSession from '../../utils/workout/getNextGymSession';
+import getNextGymSession from '../utils/workout/getNextGymSession';
 import { TextChannel } from 'discord.js';
 
 export default {
@@ -13,7 +13,6 @@ export default {
   guildOnly: true,
   callback: async ({ interaction, channel, guild }) => {
     const CHANNEL_ID = '638145442307375143';
-    const channel = (await guild?.channels.fetch(CHANNEL_ID)) as TextChannel;
 
     getNextGymSession(interaction.user, channel);
   },

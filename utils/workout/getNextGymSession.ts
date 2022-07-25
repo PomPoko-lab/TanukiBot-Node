@@ -1,4 +1,4 @@
-import { TextChannel, User } from 'discord.js';
+import { User, TextChannel } from 'discord.js';
 import GymDayModel from '../../models/GymDayModel';
 import getGymDayEmbed from '../../views/getGymDayEmbed';
 
@@ -25,7 +25,6 @@ export default async (user: User, channel: TextChannel) => {
         completed: false,
       });
     }
-
     return nextDay;
   };
 
