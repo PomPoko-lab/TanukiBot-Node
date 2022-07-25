@@ -4,7 +4,7 @@ import { CronJob } from 'cron';
 
 export default async (client: Client) => {
   const GUILD_ID = '638145442307375139';
-  const CHANNEL_ID = '996561103054192741';
+  const CHANNEL_ID = '638145442307375143';
   const USER_ID = '346892063314542603';
 
   try {
