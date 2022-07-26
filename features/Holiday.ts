@@ -10,7 +10,7 @@ export default async (client: Client) => {
   const API_KEY = `api_key=${process.env.HOLIDAY_API}`;
   const country = 'US';
 
-  const getHoliday = async (day = new Date().getDay()) => {
+  const getHoliday = async (day) => {
     const currYear = new Date().getFullYear();
     const currMonth = new Date().getMonth() + 1;
     const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
@@ -54,10 +54,10 @@ export default async (client: Client) => {
       const channel = (await client.channels.fetch(channelID)) as TextChannel;
 
       // Daily Announcement
-      printHolidays(await getHoliday(), channel);
+      const currDay = new Date().getDate();
+      printHolidays(await getHoliday(currDay), channel);
 
       // Announcement 3 days from now
-
       setTimeout(async () => {
         const days3 = +format(addDays(new Date(), 3), 'd');
         printHolidays(await getHoliday(days3), channel);
