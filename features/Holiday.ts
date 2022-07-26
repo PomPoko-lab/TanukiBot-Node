@@ -10,7 +10,7 @@ export default async (client: Client) => {
   const API_KEY = `api_key=${process.env.HOLIDAY_API}`;
   const country = 'US';
 
-  const getHoliday = async (day) => {
+  const getHoliday = async (day: number) => {
     const currYear = new Date().getFullYear();
     const currMonth = new Date().getMonth() + 1;
     const params = `&country=${country}&year=${currYear}&month=${currMonth}`;
