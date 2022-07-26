@@ -6,7 +6,7 @@ export default async (user: User, channel: TextChannel) => {
   // Gets the next Gym Day, if all completed, resets all the false
   // and returns next day
   const getNextDay = async () => {
-    let nextDay = await GymDayModel.findOne({
+    const nextDay = await GymDayModel.findOne({
       userId: user.id,
       completed: false,
     });
