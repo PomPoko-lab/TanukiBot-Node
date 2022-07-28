@@ -30,11 +30,11 @@ export default async (client: Client) => {
         date: string;
         type: string;
       }) => {
-        // if (holiday.type !== 'public_holiday') return;
+        if (holiday.type !== 'public_holiday') return;
 
         const embed = new MessageEmbed()
           .setAuthor({
-            name: 'New Holiday',
+            name: 'Holiday Notifier',
           })
           .setColor('#0099ff')
           .setTitle(holiday.name)
