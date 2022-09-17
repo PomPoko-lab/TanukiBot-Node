@@ -1,6 +1,5 @@
 import DiscordJS, { Intents } from 'discord.js';
 import WOKCommands from 'wokcommands';
-import mongoose from 'mongoose';
 import { DisTube } from 'distube';
 import { YtDlpPlugin } from '@distube/yt-dlp';
 import { SpotifyPlugin } from '@distube/spotify';
