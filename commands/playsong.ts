@@ -41,10 +41,11 @@ module.exports = {
 				});
 
 				interaction.deleteReply();
-
-				console.log(`Playing: ${url}`);
 			} catch (err) {
-				console.error(err);
+				interaction.editReply(
+					`Couldn't play the song. Something went wrong.`
+				);
+				clientLogger.error(err);
 			}
 		}
 	},

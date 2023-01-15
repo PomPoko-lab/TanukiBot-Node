@@ -1,26 +1,18 @@
-import { Client, GatewayIntentBits } from 'discord.js';
 import DisTube from 'distube';
-import dotenv from 'dotenv';
 
 // Util imports
 import { IExtendedClient } from './Interface/IExtendedClient';
-import { InitSequence } from './utils/InitSequence';
-
-// Init the env file
-dotenv.config();
+import { InitSequence } from './classes/InitSequence';
+import { ClientLogger } from './classes/ClientLogger';
 
 declare global {
 	var client: IExtendedClient;
 	var distube: DisTube;
+	var clientLogger: ClientLogger;
 }
 
-global.client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.GuildVoiceStates,
-	],
-}) as IExtendedClient;
+const init = new InitSequence();
 
-global.distube = new InitSequence().distube;
+global.client = init.client;
+global.distube = init.distube;
+global.clientLogger = init.clientLogger;

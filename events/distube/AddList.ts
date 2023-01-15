@@ -1,12 +1,10 @@
 import { Playlist, Queue } from 'distube';
 import { EmbedBuilder } from 'discord.js';
-import { logEvent } from '../../utils/Logger';
 
 module.exports = {
 	name: 'addList',
 	once: true,
 	function: (queue: Queue, playlist: Playlist) => {
-		const songName = playlist.name.trim();
 		const message = new EmbedBuilder()
 			.setColor('#dfa290')
 			.setAuthor({
@@ -25,12 +23,7 @@ module.exports = {
 			allowedMentions: { users: [] },
 		});
 
-		// user added numberSongs to the queue
-		console.log(
-			`${logEvent()}${playlist.member?.displayName}#${
-				playlist.user?.tag
-			} added ${playlist.songs.length} to the queue
-			}`
-		);
+		clientLogger.error(`${playlist.member?.displayName}#${playlist.user?.tag} added ${playlist.songs.length} to the queue
+		}`);
 	},
 };

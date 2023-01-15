@@ -72,7 +72,7 @@ module.exports = {
 				embeds: [message],
 			});
 		} catch (err) {
-			console.log(err);
+			clientLogger.error(err);
 		}
 	},
 };

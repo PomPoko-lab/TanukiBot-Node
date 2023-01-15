@@ -1,7 +1,6 @@
 import { BaseInteraction, Events } from 'discord.js';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
-import { logEvent } from '../utils/Logger';
 import DisTube from 'distube';
 
 declare global {
@@ -22,16 +21,13 @@ module.exports = {
 			interaction.commandName
 		) as ICommand;
 
-		if (!command) return console.log(`Couldn't find a matching command`);
+		if (!command)
+			return clientLogger.error(`Couldn't find a matching command`);
 
 		// Execute the command async
 		try {
-			console.log(
-				`${logEvent()}Executing command for ${
-					interaction.user.username
-				}#${interaction.user.discriminator}: '${
-					interaction.commandName
-				}'`
+			clientLogger.log(
+				`Executing command for ${interaction.user.username}#${interaction.user.discriminator}: '${interaction.commandName}'`
 			);
 			await command.function(
 				interaction,
@@ -39,10 +35,8 @@ module.exports = {
 				globalThis.distube
 			);
 		} catch (e) {
-			console.log(
-				`${logEvent()}[ERROR] Something went wrong executing command: '${
-					interaction.commandName
-				}'`
+			clientLogger.error(
+				`Something went wrong executing command: '${interaction.commandName}'`
 			);
 		}
 	},

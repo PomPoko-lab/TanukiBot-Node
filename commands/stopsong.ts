@@ -41,7 +41,7 @@ module.exports = {
 					content: 'Successfully stopped the music player.',
 				});
 			} catch (err) {
-				console.error(err);
+				clientLogger.error(err);
 			}
 		}
 	},

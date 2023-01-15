@@ -1,6 +1,5 @@
 import { Events, Message } from 'discord.js';
 import { IExtendedClient } from '../Interface/IExtendedClient';
-import { logEvent } from '../utils/Logger';
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -18,15 +17,13 @@ module.exports = {
 
 		if (message.content.includes('deez')) {
 			try {
-				console.log(
-					`${logEvent()}Gave ${user.username}#${
-						user.discriminator
-					} some of deez nuts..`
+				clientLogger.log(
+					`Gave ${user.username}#${user.discriminator} some of deez nuts..`
 				);
 				await message.reply('nuts');
 			} catch (e) {
-				console.log(
-					`${logEvent()}[ERROR] Something went wrong executing command: 'deez'`
+				clientLogger.error(
+					`Something went wrong executing command: 'deez'`
 				);
 			}
 		}

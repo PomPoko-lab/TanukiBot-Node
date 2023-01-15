@@ -1,6 +1,5 @@
 import { Queue, Song } from 'distube';
 import { EmbedBuilder } from 'discord.js';
-import { logEvent } from '../../utils/Logger';
 
 module.exports = {
 	name: 'playSong',
@@ -38,6 +37,6 @@ module.exports = {
 			embeds: [message],
 		});
 
-		console.log(`${logEvent()}now playing: ${songName}`);
+		clientLogger.log(`Now playing: ${songName}`);
 	},
 };

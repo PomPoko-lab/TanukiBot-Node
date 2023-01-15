@@ -1,6 +1,5 @@
 import { Queue, Song } from 'distube';
 import { EmbedBuilder } from 'discord.js';
-import { logEvent } from '../../utils/Logger';
 
 module.exports = {
 	name: 'addSong',
@@ -21,6 +20,6 @@ module.exports = {
 			allowedMentions: { users: [] },
 		});
 
-		console.log(`${logEvent()}${song.user?.tag} added song: ${songName}`);
+		clientLogger.log(`${song.user?.tag} added song: ${songName}`);
 	},
 };

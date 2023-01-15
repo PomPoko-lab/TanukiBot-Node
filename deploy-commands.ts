@@ -5,7 +5,6 @@ import {
 } from 'discord.js';
 import fs from 'node:fs';
 import path from 'node:path';
-import { logEvent } from './utils/Logger';
 
 import dotenv from 'dotenv';
 import { ICommand } from './Interface/ICommand';
@@ -30,10 +29,8 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN!);
 // and deploy your commands!
 (async () => {
 	try {
-		console.log(
-			`${logEvent()}Started refreshing ${
-				commands.length
-			} application (/) commands.`
+		clientLogger.log(
+			`Started refreshing ${commands.length} application (/) commands.`
 		);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
@@ -44,14 +41,11 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN!);
 			),
 			{ body: commands }
 		)) as [];
-
-		console.log(
-			`${logEvent()}Successfully reloaded ${
-				data.length
-			} application (/) commands.`
+		clientLogger.log(
+			`Successfully reloaded ${data.length} application (/) commands.`
 		);
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
-		console.error(error);
+		clientLogger.error(error);
 	}
 })();

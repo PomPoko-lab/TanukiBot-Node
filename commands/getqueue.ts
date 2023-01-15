@@ -79,7 +79,7 @@ module.exports = {
 
 				interaction.editReply({ embeds: [songListEmbed] });
 			} catch (err) {
-				console.error(err);
+				clientLogger.error(err);
 			}
 		}
 	},

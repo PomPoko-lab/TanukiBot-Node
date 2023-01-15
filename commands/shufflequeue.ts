@@ -79,7 +79,7 @@ module.exports = {
 					setTimeout(() => interaction.deleteReply, 5000);
 				}
 			} catch (err) {
-				console.error(err);
+				clientLogger.error(err);
 			}
 		}
 	},

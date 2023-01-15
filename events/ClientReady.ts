@@ -1,6 +1,5 @@
 import { Events, ActivityType } from 'discord.js';
 import { IExtendedClient } from '../Interface/IExtendedClient';
-import { logEvent } from '../utils/Logger';
 
 module.exports = {
 	name: Events.ClientReady,
@@ -15,8 +14,6 @@ module.exports = {
 				},
 			],
 		});
-		console.log(
-			`\n${logEvent()}Successfully logged in as ${client.user?.tag}\n`
-		);
+		clientLogger.log(`Successfully logged in as ${client.user?.tag}\n`);
 	},
 };
