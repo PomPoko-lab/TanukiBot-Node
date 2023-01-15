@@ -10,7 +10,7 @@ Project development currently in progress.
 
 ### Links
 
-- [Github Repo](https://github.com/PomPoko-lab/TanukiBot-NodeV2.0 'TanukiBot V2 Repo')
+- [Github Repo](https://github.com/PomPoko-lab/TanukiBot-Node 'TanukiBot V2 Repo')
 
 ### Current Features
 
