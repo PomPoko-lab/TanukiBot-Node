@@ -1,53 +1,26 @@
-import DiscordJS, { Intents } from 'discord.js';
-import WOKCommands from 'wokcommands';
-import { DisTube } from 'distube';
-import { YtDlpPlugin } from '@distube/yt-dlp';
-import { SpotifyPlugin } from '@distube/spotify';
-
-import path from 'path';
-
+import { Client, GatewayIntentBits } from 'discord.js';
+import DisTube from 'distube';
 import dotenv from 'dotenv';
+
+// Util imports
+import { IExtendedClient } from './Interface/IExtendedClient';
+import { InitSequence } from './utils/InitSequence';
+
+// Init the env file
 dotenv.config();
 
-// Creating Discord Client
+declare global {
+	var client: IExtendedClient;
+	var distube: DisTube;
+}
 
-const client = new DiscordJS.Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-  ],
-});
+global.client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
+	],
+}) as IExtendedClient;
 
-// Creating Distube client
-
-export const distube = new DisTube(client, {
-  leaveOnEmpty: false,
-  leaveOnFinish: true,
-  leaveOnStop: true,
-  youtubeDL: false,
-  plugins: [new YtDlpPlugin(), new SpotifyPlugin()],
-});
-
-client.once('ready', async () => {
-  new WOKCommands(client, {
-    commandsDir: path.join(__dirname, 'commands'),
-    featuresDir: path.join(__dirname, 'features'),
-    testServers: ['638145442307375139', '384186251693260800'],
-    botOwners: ['346892063314542603'],
-    typeScript: true,
-    ignoreBots: true,
-    ephemeral: false,
-    mongoUri: process.env.MONGO_URI,
-    dbOptions: {
-      keepAlive: true,
-    },
-  }).setDefaultPrefix('.');
-  client.user?.setPresence({
-    activities: [{ name: 'with node.js', type: 'PLAYING' }],
-    status: 'dnd',
-  });
-});
-
-client.login(process.env.TOKEN);
+global.distube = new InitSequence().distube;
