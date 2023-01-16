@@ -9,6 +9,7 @@ import { userInChannel, isValidUrl } from '../utils/ValidateChannel';
 
 import DisTube from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
+import { ICommand } from '../Interface/ICommand';
 
 module.exports = {
 	name: new SlashCommandBuilder()
@@ -49,4 +50,4 @@ module.exports = {
 			}
 		}
 	},
-};
+} as ICommand;

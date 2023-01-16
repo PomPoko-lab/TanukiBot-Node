@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import DisTube from 'distube';
 import { Configuration, OpenAIApi } from 'openai';
 import { IExtendedClient } from '../Interface/IExtendedClient';
+import { ICommand } from '../Interface/ICommand';
 
 module.exports = {
 	name: new SlashCommandBuilder()
@@ -19,6 +20,7 @@ module.exports = {
 				.setDescription('Input prompt')
 				.setRequired(true)
 		),
+	devOnly: true,
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,
@@ -75,4 +77,4 @@ module.exports = {
 			clientLogger.error(err);
 		}
 	},
-};
+} as ICommand;

@@ -8,6 +8,7 @@ import { userInChannel, hasQueue } from '../utils/ValidateChannel';
 
 import DisTube, { GuildIdResolvable } from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
+import { ICommand } from '../Interface/ICommand';
 
 module.exports = {
 	name: new SlashCommandBuilder()
@@ -53,4 +54,4 @@ module.exports = {
 			}
 		}
 	},
-};
+} as ICommand;
