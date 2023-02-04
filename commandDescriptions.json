@@ -1,0 +1,41 @@
+{
+	"commands": {
+		"OpenAI - Chat": {
+			"name": "chat",
+			"description": "Sends ChatGPT prompt"
+		},
+		"DisTube - Get Song Queue": {
+			"name": "getqueue",
+			"description": "Gets the current queue"
+		},
+		"DisTube - Pause Queue": {
+			"name": "pause",
+			"description": "Pauses the current song"
+		},
+		"DisTube - Resume Queue": {
+			"name": "resume",
+			"description": "Resumes playing the music player"
+		},
+		"DisTube - Play Song": {
+			"name": "playsong",
+			"description": "Plays a song on YouTube"
+		},
+		"DisTube - Stop Song": {
+			"name": "stopsong",
+			"description": "Stops and ends the queue"
+		},
+		"DisTube - Skip Song": {
+			"name": "skip",
+			"description": "Skips to the next song in the queue"
+		},
+		"DisTube - Shuffle Queue": {
+			"name": "shufflequeue",
+			"description": "Shuffles the current queue"
+		},
+		"DisTube - Toggle AutoPlay": {
+			"name": "toggleautoplay",
+			"description": "Toggles the autoplay feature"
+		}
+	},
+	"events": {}
+}

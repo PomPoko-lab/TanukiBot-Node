@@ -11,10 +11,16 @@ import DisTube from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
+import { commands } from '../commandDescriptions.json';
+
+const {
+	'DisTube - Play Song': { name: commandName, description: commandDesc },
+} = commands;
+
 module.exports = {
 	name: new SlashCommandBuilder()
-		.setName('playsong')
-		.setDescription('Plays a song on YouTube')
+		.setName(commandName)
+		.setDescription(commandDesc)
 		.addStringOption((option) =>
 			option.setName('url').setDescription('url of song from')
 		),

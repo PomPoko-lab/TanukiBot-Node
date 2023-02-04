@@ -10,10 +10,19 @@ import DisTube, { GuildIdResolvable } from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
+import { commands } from '../commandDescriptions.json';
+
+const {
+	'DisTube - Toggle AutoPlay': {
+		name: commandName,
+		description: commandDesc,
+	},
+} = commands;
+
 module.exports = {
 	name: new SlashCommandBuilder()
-		.setName('toggleautoplay')
-		.setDescription('Toggles the autoplay feature'),
+		.setName(commandName)
+		.setDescription(commandDesc),
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,

@@ -11,10 +11,16 @@ import DisTube, { GuildIdResolvable } from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
+import { commands } from '../commandDescriptions.json';
+
+const {
+	'DisTube - Get Song Queue': { name: commandName, description: commandDesc },
+} = commands;
+
 module.exports = {
 	name: new SlashCommandBuilder()
-		.setName('getqueue')
-		.setDescription('Gets the current queue'),
+		.setName(commandName)
+		.setDescription(commandDesc),
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,

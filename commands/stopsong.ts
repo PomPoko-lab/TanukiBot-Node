@@ -10,10 +10,16 @@ import DisTube, { GuildIdResolvable } from 'distube';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
+import { commands } from '../commandDescriptions.json';
+
+const {
+	'DisTube - Stop Song': { name: commandName, description: commandDesc },
+} = commands;
+
 module.exports = {
 	name: new SlashCommandBuilder()
-		.setName('stopsong')
-		.setDescription('Stops playing music'),
+		.setName(commandName)
+		.setDescription(commandDesc),
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,

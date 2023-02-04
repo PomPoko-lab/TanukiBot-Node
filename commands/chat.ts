@@ -10,10 +10,16 @@ import { Configuration, OpenAIApi } from 'openai';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
+import { commands } from '../commandDescriptions.json';
+
+const {
+	'OpenAI - Chat': { name: commandName, description: commandDesc },
+} = commands;
+
 module.exports = {
 	name: new SlashCommandBuilder()
-		.setName('chat')
-		.setDescription('Sends ChatGPT prompt')
+		.setName(commandName)
+		.setDescription(commandDesc)
 		.addStringOption((option) =>
 			option
 				.setName('prompt')
