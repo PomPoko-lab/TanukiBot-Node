@@ -1,0 +1,19 @@
+version: '3.7'
+
+name: tanuki-bot
+services:
+    ts-node:
+        container_name: Node
+        image: node:${NODE_VERSION}
+        volumes:
+            - ./:/home/node/app
+            - node_modules:/home/node/app/node_modules
+        expose:
+            - ${PROJECT_PORT}
+        ports:
+            - ${PROJECT_PORT}:${PROJECT_PORT}
+        working_dir: /home/node/app/
+        command: npm run start
+
+volumes:
+    node_modules:
