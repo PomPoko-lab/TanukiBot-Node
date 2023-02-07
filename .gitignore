@@ -17,3 +17,6 @@ yarn-error.log*
 
 # Start BAT
 startBot.bat
+
+# build files
+/build

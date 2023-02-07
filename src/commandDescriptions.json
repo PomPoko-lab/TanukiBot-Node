@@ -35,6 +35,10 @@
 		"DisTube - Toggle AutoPlay": {
 			"name": "toggleautoplay",
 			"description": "Toggles the autoplay feature"
+		},
+		"GameServer - Start Server": {
+			"name": "startserver",
+			"description": "Starts a Game Server"
 		}
 	},
 	"events": {}

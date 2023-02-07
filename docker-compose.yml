@@ -7,7 +7,6 @@ services:
         image: node:${NODE_VERSION}
         volumes:
             - ./:/home/node/app
-            - node_modules:/home/node/app/node_modules
         expose:
             - ${PROJECT_PORT}
         ports:
