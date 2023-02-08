@@ -1,9 +1,7 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import ps from 'ps-node';
-
 import dotenv from 'dotenv';
-
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import DisTube from 'distube';
+import find from 'find-process';
 import { IExtendedClient } from '../Interface/IExtendedClient';
 import { ICommand } from '../Interface/ICommand';
 
@@ -27,15 +25,11 @@ module.exports = {
 		distube: DisTube
 	) => {
 		dotenv.config();
-		const processName = process.env.GAMESERVER_EXE_CONAN_EXILE!;
+		// const processName = process.env.GAMESERVER_EXE_CONAN_EXILE!;
+		const processName = 'notepad';
 
-		ps.lookup(
-			{
-				command: processName,
-			},
-			(err, results) => {
-				console.log(results);
-			}
-		);
+		find('name', processName).then((results) => {
+			console.log(results);
+		});
 	},
 } as ICommand;
