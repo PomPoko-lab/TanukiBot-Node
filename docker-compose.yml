@@ -1,18 +1,18 @@
 version: '3.7'
 
-name: tanuki-bot
 services:
     ts-node:
-        container_name: Node
+        container_name: Node_${COMPOSE_PROJECT_NAME}
         image: node:${NODE_VERSION}
         volumes:
-            - ./:/home/node/app
-        expose:
-            - ${PROJECT_PORT}
-        ports:
-            - ${PROJECT_PORT}:${PROJECT_PORT}
-        working_dir: /home/node/app/
-        command: npm run start
-
-volumes:
-    node_modules:
+            - ./:${DOCUMENT_ROOT}
+        working_dir: ${DOCUMENT_ROOT}
+        # Allow container to execute gameservers on host machine
+        privileged: true
+        tty: true
+        pid: host
+        command: sh -c "
+            npm install &&
+            npm run deploy-commands && 
+            npm run start
+            "
