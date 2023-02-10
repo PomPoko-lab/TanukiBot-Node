@@ -36,9 +36,9 @@
 			"name": "toggleautoplay",
 			"description": "Toggles the autoplay feature"
 		},
-		"GameServer - Start Server": {
-			"name": "startserver",
-			"description": "Starts a Game Server"
+		"GameServer - Server List": {
+			"name": "serverlist",
+			"description": "Gets list of available game servers"
 		}
 	},
 	"events": {}
