@@ -8,3 +8,7 @@
 - Moved source files into /src directory
 
 - Created initial docker container for project
+
+- Created initial dedicated server starter
+    - Added whitelisting by channel
+    - Prevented users from starting a process if it's already up

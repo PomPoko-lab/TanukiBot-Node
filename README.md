@@ -1,6 +1,6 @@
 # TanukiBot-NodeV2.0
 
-My personalize Discord Bot coded in NodeJS.
+A personalized Discord Bot coded in NodeJS.
 
 ## Overview
 
@@ -10,35 +10,37 @@ Project development currently in progress.
 
 ### Links
 
-- [Github Repo](https://github.com/PomPoko-lab/TanukiBot-NodeV2.0 'TanukiBot V2 Repo')
+-   [Github Repo](https://github.com/PomPoko-lab/TanukiBot-NodeV2.0 'TanukiBot V2 Repo')
 
 ### Current Features
 
 #### Music Player
-- Plays a Youtube or Spotify URL
-- Gets the currently playing queue
-- Shuffles the queue
-- Pauses the queue
-- Stops the queue
-#### Chat
-- Integration of ChatGPT's 'text-davinci-003' model
 
+-   Plays a Youtube or Spotify URL
+-   Gets the currently playing queue
+-   Shuffles the queue
+-   Pauses the queue
+-   Stops the queue
+
+#### Chat
+
+-   Integration of ChatGPT's 'text-davinci-003' model
 
 ## Project Roadmap
 
-- [x] Music Player: Play a Youtube URL
-- [x] Music Player: Stop player
-- [x] Music Player: Play Song message
-- [x] Music Player: Get current queue
-- [x] Music Player: Shuffle queue
-- [x] Music Player: Add a Youtube Playlist
-- [x] Music Player: Spotify functionality plugin
-- [x] Music Player: Pauses currently playing queue
+-   [x] Music Player: Play a Youtube URL
+-   [x] Music Player: Stop player
+-   [x] Music Player: Play Song message
+-   [x] Music Player: Get current queue
+-   [x] Music Player: Shuffle queue
+-   [x] Music Player: Add a Youtube Playlist
+-   [x] Music Player: Spotify functionality plugin
+-   [x] Music Player: Pauses currently playing queue
 
 ## Built with
 
-- NodeJS
-- DisTube
+-   NodeJS
+-   DisTube
 
 ## Purpose of this project
 
@@ -46,9 +48,9 @@ My main problem with building personal projects is designing a UI for them as th
 
 ## Contact
 
-- [Github Profile](https://github.com/PomPoko-lab 'PomPoko-lab')
-- [Email](mailto:hello@pompoko.io 'My Email')
-- [Portfolio/Website](https://pompoko.io/ 'Portfolio')
+-   [Github Profile](https://github.com/PomPoko-lab 'PomPoko-lab')
+-   [Email](mailto:hello@pompoko.io 'My Email')
+-   [Portfolio/Website](https://pompoko.io/ 'Portfolio')
 
 ## License
 
@@ -56,4 +58,4 @@ Copyright &copy; 2023, CraftyBi.
 
 ## Acknowledgments
 
-- DisTube
+-   DisTube
