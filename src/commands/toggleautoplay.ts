@@ -16,6 +16,8 @@ const {
 	'DisTube - Toggle AutoPlay': {
 		name: commandName,
 		description: commandDesc,
+		devOnly,
+		enabled,
 	},
 } = commands;
 
@@ -23,6 +25,8 @@ module.exports = {
 	name: new SlashCommandBuilder()
 		.setName(commandName)
 		.setDescription(commandDesc),
+	devOnly,
+	enabled,
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,

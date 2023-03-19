@@ -29,6 +29,9 @@ const commandFiles = fs
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`) as ICommand;
+
+	if (!command.enabled) continue;
+
 	if (command.devOnly) {
 		devCommands.push(command.name.toJSON());
 		continue;

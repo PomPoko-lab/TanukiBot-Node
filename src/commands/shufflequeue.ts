@@ -14,13 +14,20 @@ import { ICommand } from '../Interface/ICommand';
 import { commands } from '../commandDescriptions.json';
 
 const {
-	'DisTube - Shuffle Queue': { name: commandName, description: commandDesc },
+	'DisTube - Shuffle Queue': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 module.exports = {
 	name: new SlashCommandBuilder()
 		.setName(commandName)
 		.setDescription(commandDesc),
+	devOnly,
+	enabled,
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,

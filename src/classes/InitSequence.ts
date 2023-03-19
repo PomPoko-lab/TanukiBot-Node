@@ -62,6 +62,8 @@ export class InitSequence {
 			const filePath = path.join(commandsPath, file);
 			const command = require(filePath) as ICommand;
 
+			if (!command.enabled) return;
+
 			if (command.name && command.function!) {
 				// Add to commands Collection of each file
 				this.client.commands!.set(command.name.name, command);

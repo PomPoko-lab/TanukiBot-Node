@@ -14,7 +14,12 @@ import { ICommand } from '../Interface/ICommand';
 import { commands } from '../commandDescriptions.json';
 
 const {
-	'DisTube - Play Song': { name: commandName, description: commandDesc },
+	'DisTube - Play Song': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 module.exports = {
@@ -24,6 +29,8 @@ module.exports = {
 		.addStringOption((option) =>
 			option.setName('url').setDescription('url of song from')
 		),
+	devOnly,
+	enabled,
 	function: async (
 		interaction: ChatInputCommandInteraction,
 		client: IExtendedClient,
