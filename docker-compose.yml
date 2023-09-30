@@ -1,18 +1,23 @@
 version: '3.7'
 
 services:
-    ts-node:
-        container_name: Node_${COMPOSE_PROJECT_NAME}
-        image: node:${NODE_VERSION}
+    bun:
+        container_name: bun
+        build:
+            context: .
+            dockerfile: ./docker/bun/Dockerfile
         volumes:
             - ./:${DOCUMENT_ROOT}
+            - node_modules:/home/node/app/node_modules
         working_dir: ${DOCUMENT_ROOT}
         # Allow container to execute gameservers on host machine
         privileged: true
         tty: true
         pid: host
         command: sh -c "
-            npm install &&
-            npm run deploy-commands && 
-            npm run start
-            "
+            bun install &&
+            bun run deploy-commands &&
+            bun run start"
+
+volumes:
+    node_modules:
