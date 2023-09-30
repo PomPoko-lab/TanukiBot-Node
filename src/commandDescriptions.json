@@ -57,7 +57,7 @@
 		"GameServer - Server List": {
 			"name": "serverlist",
 			"description": "Gets list of available game servers",
-			"enabled": true,
+			"enabled": false,
 			"devOnly": false
 		}
 	},
