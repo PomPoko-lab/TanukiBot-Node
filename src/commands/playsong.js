@@ -2,6 +2,8 @@ const { userInChannel, isValidUrl } = require('../utils/ValidateChannel');
 const { SlashCommandBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
+const clientLogger = require('../utils/ClientLogger');
+
 const {
 	'DisTube - Play Song': { name: commandName, description: commandDesc, devOnly, enabled },
 } = commands;
@@ -38,7 +40,7 @@ const callbackAction = async (interaction, client, distube) => {
 			interaction.deleteReply();
 		} catch (err) {
 			interaction.editReply(`Couldn't play the song. Something went wrong.`);
-			global.clientLogger.error(err);
+			clientLogger.error(err);
 		}
 	}
 };

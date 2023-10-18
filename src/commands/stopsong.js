@@ -2,6 +2,8 @@ const { userInChannel, hasQueue } = require('../utils/ValidateChannel');
 const { SlashCommandBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
+const clientLogger = require('../utils/ClientLogger');
+
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
@@ -34,7 +36,7 @@ const callbackAction = async (interaction, client, distube) => {
 				content: 'Successfully stopped the music player.',
 			});
 		} catch (err) {
-			global.clientLogger.error(err);
+			clientLogger.error(err);
 		}
 	}
 };

@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const OpenAI = require('../classes/OpenAI');
 const { commands } = require('../commandDescriptions.json');
 
+const clientLogger = require('../utils/ClientLogger');
+
 const {
 	'OpenAI - Chat': { name: commandName, description: commandDesc, devOnly, enabled },
 } = commands;
@@ -22,15 +24,13 @@ const callbackAction = async (interaction, client, distube) => {
 	}
 
 	try {
-		global.clientLogger.log(
-			`${interaction.user.username} sent a prompt to openAI. Prompt: ${prompt}`
-		);
+		clientLogger.log(`${interaction.user.username} sent a prompt to openAI. Prompt: ${prompt}`);
 		await interaction.reply("Processing your prompt.. You'll be notified when it is ready.");
 
 		const response = await openai.getLanguageResponse(prompt);
 
 		if (!response) {
-			global.clientLogger.error('OpenAI response was undefined.');
+			clientLogger.error('OpenAI response was undefined.');
 			return await interaction.channel?.send({
 				content: `<@${interaction.user.id}>, something went wrong processing your prompt for: ${prompt}`,
 			});
@@ -44,7 +44,7 @@ const callbackAction = async (interaction, client, distube) => {
 			await notificationMessage.reply(response);
 		}
 	} catch (err) {
-		global.clientLogger.error(err);
+		clientLogger.error(err);
 	}
 };
 

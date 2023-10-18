@@ -1,5 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 
+const clientLogger = require('../../utils/ClientLogger');
+
 /**
  * Action to attach
  * @param {import('distube').Queue} queue
@@ -22,8 +24,7 @@ const callbackAction = (queue, playlist) => {
 		allowedMentions: { users: [] },
 	});
 
-	global.clientLogger
-		.error(`${playlist.member?.displayName}#${playlist.user?.tag} added ${playlist.songs.length} to the queue
+	clientLogger.error(`${playlist.member?.displayName}#${playlist.user?.tag} added ${playlist.songs.length} to the queue
 	}`);
 };
 

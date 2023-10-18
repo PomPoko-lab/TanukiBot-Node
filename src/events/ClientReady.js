@@ -1,5 +1,7 @@
 const { Events, ActivityType } = require('discord.js');
 
+const clientLogger = require('../utils/ClientLogger');
+
 /**
  * Action to attach
  * @param {import('../classes/ExtendedClient')} client
@@ -14,7 +16,7 @@ const callbackAction = (client) => {
 			},
 		],
 	});
-	global.clientLogger.log(`Successfully logged in as ${client.user?.tag}\n`);
+	clientLogger.log(`Successfully logged in as ${client.user?.tag}\n`);
 };
 
 module.exports = {

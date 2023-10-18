@@ -2,6 +2,8 @@ const { userInChannel, hasQueue } = require('../utils/ValidateChannel.js');
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
+const clientLogger = require('../utils/ClientLogger.js');
+
 const {
 	'DisTube - Shuffle Queue': { name: commandName, description: commandDesc, devOnly, enabled },
 } = commands;
@@ -73,7 +75,7 @@ const callbackAction = async (interaction, client, distube) => {
 				setTimeout(() => interaction.deleteReply, 5000);
 			}
 		} catch (err) {
-			global.clientLogger.error(err);
+			clientLogger.error(err);
 		}
 	}
 };

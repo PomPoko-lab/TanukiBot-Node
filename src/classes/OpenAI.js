@@ -1,6 +1,8 @@
 const dotenv = require('dotenv');
 const { Configuration, OpenAIApi } = require('openai');
 
+const clientLogger = require('../utils/ClientLogger');
+
 module.exports = class OpenAI {
 	#openAi;
 	#configs;
@@ -10,7 +12,7 @@ module.exports = class OpenAI {
 		dotenv.config();
 
 		if (!process.env.KEY_OPEN_AI_API) {
-			global.clientLogger.error('No OpenAI model specified in the .env file.');
+			clientLogger.error('No OpenAI model specified in the .env file.');
 			throw new Error('No OpenAI API key found.');
 		}
 
@@ -18,16 +20,16 @@ module.exports = class OpenAI {
 			apiKey: process.env.KEY_OPEN_AI_API,
 		});
 
-		this.openAi = new OpenAIApi(this.#configs);
+		this.#openAi = new OpenAIApi(this.#configs);
 
 		if (process.env.OPENAI_MODEL === undefined) {
-			global.clientLogger.error('No OpenAI model specified in the .env file.');
+			clientLogger.error('No OpenAI model specified in the .env file.');
 			throw new Error('No OpenAI model specified in the .env file.');
 		}
 		const openAiModel = process.env.OPENAI_MODEL;
 
 		if (!openAiModel) {
-			global.clientLogger.error('No OpenAI model specified in the .env file.');
+			clientLogger.error('No OpenAI model specified in the .env file.');
 			throw new Error('No OpenAI model specified in the .env file.');
 		}
 
@@ -50,7 +52,7 @@ module.exports = class OpenAI {
 		const persona = process.env.TANUKI_BOT_PERSONA;
 
 		if (!persona) {
-			global.clientLogger.error('No bot persona specified in the .env file.');
+			clientLogger.error('No bot persona specified in the .env file.');
 			throw new Error('No persona specified in the .env file.');
 		}
 
@@ -62,7 +64,7 @@ module.exports = class OpenAI {
 		});
 
 		if (!prompt) {
-			global.clientLogger.error('No prompt specified when trying to get an AI response.');
+			clientLogger.error('No prompt specified when trying to get an AI response.');
 			return;
 		}
 
@@ -82,19 +84,19 @@ module.exports = class OpenAI {
 		});
 
 		if (response.status !== 200 && response.data.choices.length) {
-			global.clientLogger.error('OpenAI response status was not a success.');
-			global.clientLogger.error(response);
+			clientLogger.error('OpenAI response status was not a success.');
+			clientLogger.error(response);
 			return;
 		}
 
 		const replyMessage = response.data.choices[0].message?.content;
 
 		if (replyMessage) {
-			global.clientLogger.log(response.data);
-			global.clientLogger.log(replyMessage);
-			global.clientLogger.log(`Response length: ${replyMessage.length}`);
+			clientLogger.log(response.data);
+			clientLogger.log(replyMessage);
+			clientLogger.log(`Response length: ${replyMessage.length}`);
 		} else {
-			global.clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
+			clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
 		}
 
 		return response.data.choices[0].message?.content;
@@ -125,19 +127,19 @@ module.exports = class OpenAI {
 		});
 
 		if (response.status !== 200 && response.data.choices.length) {
-			global.clientLogger.error('OpenAI response status was not a success.');
-			global.clientLogger.error(response);
+			clientLogger.error('OpenAI response status was not a success.');
+			clientLogger.error(response);
 			return;
 		}
 
 		const replyMessage = response.data.choices[0].message?.content;
 
 		if (replyMessage) {
-			global.clientLogger.log(response.data);
-			global.clientLogger.log(replyMessage);
-			global.clientLogger.log(`Response length: ${replyMessage.length}`);
+			clientLogger.log(response.data);
+			clientLogger.log(replyMessage);
+			clientLogger.log(`Response length: ${replyMessage.length}`);
 		} else {
-			global.clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
+			clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
 		}
 
 		return response.data.choices[0].message?.content;

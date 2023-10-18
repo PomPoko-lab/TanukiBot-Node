@@ -1,23 +1,23 @@
 version: '3.7'
 
 services:
-    bun:
-        container_name: bun
+    node:
+        container_name: node
         build:
             context: .
-            dockerfile: ./docker/bun/Dockerfile
+            dockerfile: ./docker/node/Dockerfile
         volumes:
-            - ./:${DOCUMENT_ROOT}
+            - ./src:/home/node/app/src
             - node_modules:/home/node/app/node_modules
-        working_dir: ${DOCUMENT_ROOT}
+        working_dir: /home/node/app/
         # Allow container to execute gameservers on host machine
         privileged: true
         tty: true
         pid: host
         command: sh -c "
-            bun install &&
-            bun run deploy-commands &&
-            bun run start"
+            pnpm install &&
+            pnpm run deploy-commands &&
+            pnpm run start"
 
 volumes:
     node_modules:

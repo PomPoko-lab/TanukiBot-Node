@@ -1,5 +1,7 @@
 const { Events } = require('discord.js');
-const { OpenAI } = require('../classes/OpenAI');
+const OpenAI = require('../classes/OpenAI');
+
+const clientLogger = require('../utils/ClientLogger');
 
 /** @typedef {import('discord.js').Message} Message */
 
@@ -11,7 +13,7 @@ const { OpenAI } = require('../classes/OpenAI');
  */
 const botReplyToUser = async (message, botId) => {
 	const user = message.author;
-	global.clientLogger.log(`Mentioned by ${user.username}#${user.discriminator}`);
+	clientLogger.log(`Mentioned by ${user.username}#${user.discriminator}`);
 
 	try {
 		const openAI = new OpenAI();
@@ -19,12 +21,12 @@ const botReplyToUser = async (message, botId) => {
 		await message.channel.sendTyping();
 		const aiResponse = await openAI.getChatResponse(message, botId);
 		if (!aiResponse) {
-			global.clientLogger.error('AI response was undefined.');
+			clientLogger.error('AI response was undefined.');
 			return;
 		}
 		await message.reply(aiResponse);
 	} catch (e) {
-		global.clientLogger.error(`Something went wrong replying to ${user.username}`);
+		clientLogger.error(`Something went wrong replying to ${user.username}`);
 	}
 };
 
@@ -57,12 +59,10 @@ const callbackAction = async (message) => {
 
 	if (message.content.includes('deez')) {
 		try {
-			global.clientLogger.log(
-				`Gave ${user.username}#${user.discriminator} some of deez nuts..`
-			);
+			clientLogger.log(`Gave ${user.username}#${user.discriminator} some of deez nuts..`);
 			await message.reply('nuts');
 		} catch (e) {
-			global.clientLogger.error(`Something went wrong executing command: 'deez'`);
+			clientLogger.error(`Something went wrong executing command: 'deez'`);
 		}
 	}
 };

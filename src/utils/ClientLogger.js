@@ -4,7 +4,7 @@
  * @module Classes/ClientLogger
  */
 
-module.exports = class ClientLogger {
+class ClientLogger {
 	#prefix;
 	#errorPrefix;
 
@@ -36,4 +36,6 @@ module.exports = class ClientLogger {
 	error(errorMessage) {
 		console.log(`[${this.#prefix}] ${this.#errorPrefix} ${errorMessage}`);
 	}
-};
+}
+
+module.exports = new ClientLogger();

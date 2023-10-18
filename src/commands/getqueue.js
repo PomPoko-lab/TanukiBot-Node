@@ -2,6 +2,8 @@ const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { userInChannel, hasQueue } = require('../utils/ValidateChannel');
 const { commands } = require('../commandDescriptions.json');
 
+const clientLogger = require('../utils/ClientLogger');
+
 const {
 	'DisTube - Get Song Queue': { name: commandName, description: commandDesc, devOnly, enabled },
 } = commands;
@@ -73,7 +75,7 @@ const callbackAction = async (interaction, client, distube) => {
 
 			interaction.editReply({ embeds: [songListEmbed] });
 		} catch (err) {
-			global.clientLogger.error(err);
+			clientLogger.error(err);
 		}
 	}
 };

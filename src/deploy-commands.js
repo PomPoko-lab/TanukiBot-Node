@@ -9,14 +9,13 @@ const fs = require('fs');
 const path = require('path');
 
 const dotenv = require('dotenv');
-const ClientLogger = require('./utils/ClientLogger');
+const clientLogger = require('./utils/ClientLogger');
 
 /**
  * @typedef {import('./Interface/ICommand').ICommand} ICommand
  * @typedef {import('discord.js').RESTPostAPIApplicationCommandsJSONBody} RESTPostAPIApplicationCommandsJSONBody
  */
 
-const clientLogger = new ClientLogger();
 const commandsPath = path.join(__dirname, 'commands');
 
 /** @type ICommand | RESTPostAPIApplicationCommandsJSONBody[] */
