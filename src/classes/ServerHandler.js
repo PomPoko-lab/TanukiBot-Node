@@ -1,7 +1,7 @@
-import { exec } from "child_process";
-import find from "find-process";
+const exec = require("child_process").exec;
+const find = require("find-process");
 
-export class ServerHandler {
+module.exports = class ServerHandler {
     /**
      * 
      * @param {string} processName 
