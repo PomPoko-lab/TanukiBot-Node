@@ -18,6 +18,7 @@
 		"distube": "^4.1.0",
 		"dotenv": "^16.0.3",
 		"find-process": "^1.4.7",
+		"hoyoapi": "^1.2.0",
 		"openai": "^3.3.0",
 		"sodium": "^3.0.2"
 	},
