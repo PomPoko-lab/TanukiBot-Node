@@ -1,3 +1,5 @@
 node_modules
 npm-debug.log
 .git/
+x_db_data/
+.pnpm-store/

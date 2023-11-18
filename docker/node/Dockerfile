@@ -9,11 +9,3 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN npm install pnpm -g
-
-COPY package*.json ./
-
-RUN pnpm install
-
-COPY . .
-
-CMD ["pnpm", "start"]
