@@ -6,6 +6,9 @@
 # VSCode settings
 /.vscode
 
+# build files
+/build
+
 # misc
 .DS_Store
 .env
@@ -19,6 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 startBot.bat
-
-# build files
-/build
+x_db_data
