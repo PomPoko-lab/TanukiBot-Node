@@ -14,6 +14,8 @@ services:
         privileged: true
         tty: true
         pid: host
+        depends_on:
+            - pocketbase
         command: sh -c " pnpm install && pnpm run deploy-commands && pnpm run start"
 
     pocketbase:
