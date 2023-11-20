@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
-const clientLogger = require('../../utils/ClientLogger');
+const clientLogger = require('../../utils/classes/ClientLogger');
 
 /**
  * Action to attach
@@ -14,8 +14,7 @@ const callbackAction = (queue, playlist) => {
 			name: 'New Playlist Added',
 		})
 		.setDescription(
-			`<@${playlist.user?.id}> has added '${playlist.name.trim()}' to the queue. - (${
-				playlist.songs.length
+			`<@${playlist.user?.id}> has added '${playlist.name.trim()}' to the queue. - (${playlist.songs.length
 			} songs)`
 		);
 

@@ -54,6 +54,12 @@
 			"enabled": true,
 			"devOnly": false
 		},
+		"System - Redeem Code": {
+			"name": "redeemcode",
+			"description": "Redeems a code",
+			"enabled": true,
+			"devOnly": true
+		},
 		"GameServer - Server List": {
 			"name": "serverlist",
 			"description": "Gets list of available game servers",

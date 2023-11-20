@@ -1,8 +1,8 @@
-const { userInChannel, hasQueue } = require('../utils/ValidateChannel.js');
+const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel.js');
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
-const clientLogger = require('../utils/ClientLogger.js');
+const clientLogger = require('../utils/classes/ClientLogger.js');
 
 const {
 	'DisTube - Shuffle Queue': { name: commandName, description: commandDesc, devOnly, enabled },

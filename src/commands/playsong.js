@@ -1,8 +1,8 @@
-const { userInChannel, isValidUrl } = require('../utils/ValidateChannel');
+const { userInChannel, isValidUrl } = require('../utils/classes/ValidateChannel');
 const { SlashCommandBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
 	'DisTube - Play Song': { name: commandName, description: commandDesc, devOnly, enabled },

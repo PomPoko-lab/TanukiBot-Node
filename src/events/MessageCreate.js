@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const OpenAI = require('../classes/OpenAI');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 /** @typedef {import('discord.js').Message} Message */
 

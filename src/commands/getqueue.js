@@ -1,8 +1,8 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const { userInChannel, hasQueue } = require('../utils/ValidateChannel');
+const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel');
 const { commands } = require('../commandDescriptions.json');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
 	'DisTube - Get Song Queue': { name: commandName, description: commandDesc, devOnly, enabled },

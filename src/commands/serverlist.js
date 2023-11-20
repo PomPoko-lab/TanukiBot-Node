@@ -2,9 +2,9 @@ const dotenv = require('dotenv');
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
-const { ServerHandler } = require('../classes/ServerHandler');
+const ServerHandler = require('../classes/ServerHandler');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
     'GameServer - Server List': {

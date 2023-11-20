@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
-const clientLogger = require('../../utils/ClientLogger');
+const clientLogger = require('../../utils/classes/ClientLogger');
 
 /**
  * Action to attach

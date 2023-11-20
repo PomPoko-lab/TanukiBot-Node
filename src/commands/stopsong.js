@@ -1,8 +1,8 @@
-const { userInChannel, hasQueue } = require('../utils/ValidateChannel');
+const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel');
 const { SlashCommandBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 /**
  * Action to attach

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { userInChannel, hasQueue } = require('../utils/ValidateChannel');
+const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel');
 const { commands } = require('../commandDescriptions.json');
 
 const {

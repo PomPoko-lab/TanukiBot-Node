@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dotenv = require('dotenv');
-const clientLogger = require('./utils/ClientLogger');
+const clientLogger = require('./utils/classes/ClientLogger');
 
 /**
  * @typedef {import('./Interface/ICommand').ICommand} ICommand

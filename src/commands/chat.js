@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const OpenAI = require('../classes/OpenAI');
 const { commands } = require('../commandDescriptions.json');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
 	'OpenAI - Chat': { name: commandName, description: commandDesc, devOnly, enabled },

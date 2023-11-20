@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const { Configuration, OpenAIApi } = require('openai');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 module.exports = class OpenAI {
 	#openAi;
