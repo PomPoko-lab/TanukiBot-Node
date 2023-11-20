@@ -11,7 +11,7 @@ const { Collection, GatewayIntentBits } = require('discord.js');
 const DisTube = require('distube').default;
 const ExtendedClient = require('./ExtendedClient');
 
-const clientLogger = require('../utils/ClientLogger');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 /**
  * @typedef {import('../Interface/IEvent').IEvent} IEvent
@@ -47,6 +47,7 @@ module.exports = class InitSequence {
 			clientLogger.error(`No token found. Please set a token in the .env file.`);
 			process.exit(1);
 		}
+
 		this.client.login(process.env.BOT_TOKEN);
 
 		clientLogger.log(`Importing commands..`);
