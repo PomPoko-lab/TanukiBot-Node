@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node ./src/index.js",
+		"start": "node --inspect=0.0.0.0:9229 ./src/index.js",
 		"deploy-commands": "node ./src/deploy-commands.js"
 	},
 	"author": "",

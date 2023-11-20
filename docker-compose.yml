@@ -6,6 +6,8 @@ services:
         build:
             context: .
             dockerfile: ./docker/node/Dockerfile
+        ports:
+            - "9229:9229" # Debugging
         volumes:
             - .:/home/node/app
             - ./node_modules:/home/node/app/node_modules
