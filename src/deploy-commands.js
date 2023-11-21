@@ -24,7 +24,9 @@ const devCommands = [];
 const commands = [];
 
 // Grab all the command files from the commands directory you created earlier
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
+const commandFiles = fs
+	.readdirSync(commandsPath)
+	.filter((file) => file.endsWith('.js'));
 
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
@@ -51,7 +53,9 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 // and deploy your commands!
 (async () => {
 	try {
-		clientLogger.log(`Started refreshing ${commands.length} application (/) commands.`);
+		clientLogger.log(
+			`Started refreshing ${commands.length} application (/) commands.`
+		);
 
 		if (!process.env.CLIENT_ID || !process.env.DEV_GUILD_ID) {
 			clientLogger.error('No client ID provided.');
@@ -60,16 +64,22 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const devCommandsLoaded = await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.DEV_GUILD_ID),
+			Routes.applicationGuildCommands(
+				process.env.CLIENT_ID,
+				process.env.DEV_GUILD_ID
+			),
 			{ body: devCommands }
 		);
 		clientLogger.log(
 			//@ts-ignore
 			`Successfully reloaded ${devCommandsLoaded.length} developer application (/) commands.`
 		);
-		const commandsLoaded = await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
-			body: commands,
-		});
+		const commandsLoaded = await rest.put(
+			Routes.applicationCommands(process.env.CLIENT_ID),
+			{
+				body: commands,
+			}
+		);
 		clientLogger.log(
 			//@ts-ignore
 			`Successfully reloaded ${commandsLoaded.length} application (/) commands.`

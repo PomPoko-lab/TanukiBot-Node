@@ -7,7 +7,7 @@ services:
             context: .
             dockerfile: ./docker/node/Dockerfile
         ports:
-            - "9229:9229" # Debugging
+            - '9229:9229' # Debugging
         volumes:
             - .:/home/node/app
             - ./node_modules:/home/node/app/node_modules
@@ -18,14 +18,14 @@ services:
         pid: host
         depends_on:
             - pocketbase
-        command: sh -c " pnpm install && pnpm run deploy-commands && pnpm run start"
+        command: sh -c " pnpm install && pnpm run start"
 
     pocketbase:
         image: spectado/pocketbase:latest
         container_name: pocketbase
         restart: unless-stopped
         ports:
-            - "80:80"
+            - '80:80'
         volumes:
             - ./x_db_data:/pb_data
 
