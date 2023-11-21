@@ -20,23 +20,26 @@ global.client = init.client;
  */
 // @ts-ignore
 global.distube = init.distube;
-import('node-fetch').then((fetch) => {
-    // @ts-ignore
-    global.fetch = fetch.default;
-    import('pocketbase').then((db) => {
-        dotenv.config();
-        const Pocketbase = db.default;
-        /**
-         * The global PocketBase instance
-         * @global
-         * @type {import('pocketbase').default}
-         */
-        // @ts-ignore
-        global.db = new Pocketbase(process.env.POCKETBASE_URL);  // Replace with correct URL
-        clientLogger.log('Successfully connected to PocketBase');
-    }).catch(error => {
-        console.error("Error importing PocketBase:", error);
-    });
-}).catch(error => {
-    console.error("Error importing fetch:", error);
-});
+import('node-fetch')
+	.then((fetch) => {
+		// @ts-ignore
+		global.fetch = fetch.default;
+		import('pocketbase')
+			.then((db) => {
+				dotenv.config();
+				const Pocketbase = db.default;
+				/**
+				 * The global PocketBase instance
+				 * @global
+				 * @type {import('pocketbase').default}
+				 */
+				global.db = new Pocketbase(process.env.POCKETBASE_URL); // Replace with correct URL
+				clientLogger.log('Successfully connected to PocketBase');
+			})
+			.catch((error) => {
+				console.error('Error importing PocketBase:', error);
+			});
+	})
+	.catch((error) => {
+		console.error('Error importing fetch:', error);
+	});

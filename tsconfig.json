@@ -23,10 +23,6 @@
 		// "emitDeclarationOnly": false,  /* Only output .d.ts files and not JavaScript files. */
 		// "stripInternal": false  /* Do not emit declarations that have '@internal' in their JSDoc comments. */
 	},
-	"include": [
-		"src/**/*.js",
-	],
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["src/**/*.js"],
+	"exclude": ["node_modules"]
 }
