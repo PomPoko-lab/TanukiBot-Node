@@ -106,9 +106,13 @@ const buildMainResponseEmbed = async (client) => {
 		}
 	});
 
+	if (!value) {
+		return {};
+	}
+
 	return {
 		name: `Redeemed by [${totalRedeemedUsers}/${totalUsers}] Users:`,
-		value,
+		value: value,
 	};
 };
 
@@ -188,12 +192,16 @@ const callbackAction = async (interaction, client, _, db) => {
 		const redemptionUrl = new URL(selectedGameFromList.code_redeem_url);
 		redemptionUrl.searchParams.append('code', redemptionCode);
 
-		const embedFields = await buildMainResponseEmbed(client);
 		const replyEmbed = new EmbedBuilder()
 			.setTitle(`[${selectedGameFromList.name}] Redemption Code`)
 			.setDescription(`Redemption Code: ${redemptionCode}`)
-			.setURL(redemptionUrl.toString())
-			.addFields(embedFields);
+			.setURL(redemptionUrl.toString());
+
+		const embedFields = await buildMainResponseEmbed(client);
+
+		if (Object.keys(embedFields).length > 0) {
+			replyEmbed.addFields(embedFields);
+		}
 
 		const markRedeemedBtn = new ButtonBuilder()
 			.setCustomId('mark_redeemed')
