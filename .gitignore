@@ -3,6 +3,12 @@
 # dependencies
 /node_modules
 
+# VSCode settings
+/.vscode
+
+# build files
+/build
+
 # misc
 .DS_Store
 .env
@@ -15,5 +21,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Start BAT
 startBot.bat
+x_db_data
+.pnpm-store

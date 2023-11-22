@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+    node:
+        container_name: node
+        build:
+            context: .
+            dockerfile: ./docker/node/Dockerfile
+        ports:
+            - '9229:9229' # Debugging
+        volumes:
+            - .:/home/node/app
+            - ./node_modules:/home/node/app/node_modules
+        working_dir: /home/node/app/
+        # Allow container to execute gameservers on host machine
+        privileged: true
+        tty: true
+        pid: host
+        depends_on:
+            - pocketbase
+        command: sh -c " pnpm install && pnpm run start"
+
+    pocketbase:
+        image: spectado/pocketbase:latest
+        container_name: pocketbase
+        restart: unless-stopped
+        ports:
+            - '80:80'
+        volumes:
+            - ./x_db_data:/pb_data
+
+volumes:
+    node_modules:

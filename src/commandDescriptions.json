@@ -1,0 +1,71 @@
+{
+	"commands": {
+		"OpenAI - Chat": {
+			"name": "chat",
+			"description": "Sends ChatGPT prompt",
+			"enabled": true,
+			"devOnly": true
+		},
+		"DisTube - Get Song Queue": {
+			"name": "getqueue",
+			"description": "Gets the current queue",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Pause Queue": {
+			"name": "pause",
+			"description": "Pauses the current song",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Resume Queue": {
+			"name": "resume",
+			"description": "Resumes playing the music player",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Play Song": {
+			"name": "playsong",
+			"description": "Plays a song on YouTube",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Stop Song": {
+			"name": "stopsong",
+			"description": "Stops and ends the queue",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Skip Song": {
+			"name": "skip",
+			"description": "Skips to the next song in the queue",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Shuffle Queue": {
+			"name": "shufflequeue",
+			"description": "Shuffles the current queue",
+			"enabled": true,
+			"devOnly": false
+		},
+		"DisTube - Toggle AutoPlay": {
+			"name": "toggleautoplay",
+			"description": "Toggles the autoplay feature",
+			"enabled": true,
+			"devOnly": false
+		},
+		"System - Redeem Code": {
+			"name": "redeemcode",
+			"description": "Redeems a code",
+			"enabled": true,
+			"devOnly": true
+		},
+		"GameServer - Server List": {
+			"name": "serverlist",
+			"description": "Gets list of available game servers",
+			"enabled": false,
+			"devOnly": false
+		}
+	},
+	"events": {}
+}

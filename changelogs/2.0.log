@@ -1,0 +1,6 @@
+2.0 Changes
+
+- Full rewrite and implementation of Tanuki Bot without use of WOKCommands Library
+
+- Removal of Announcements API and Work out features
+    - May be re-implemented at a future time.

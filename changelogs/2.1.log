@@ -1,0 +1,14 @@
+2.1 Changes
+
+- Commands can now be specified as a "dev-only" Commands
+    - These commands are only available in the specified development channel
+
+- Command names and their respective descriptions have been bundled into a single JSON file
+
+- Moved source files into /src directory
+
+- Created initial docker container for project
+
+- Created initial dedicated server starter
+    - Added whitelisting by channel
+    - Prevented users from starting a process if it's already up
