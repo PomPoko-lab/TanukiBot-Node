@@ -5,13 +5,18 @@ const { commands } = require('../commandDescriptions.json');
 const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
-	'DisTube - Get Song Queue': { name: commandName, description: commandDesc, devOnly, enabled },
+	'DisTube - Get Song Queue': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 /**
  *
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -43,14 +48,20 @@ const callbackAction = async (interaction, client, distube) => {
 			const queueList = songQueue?.songs;
 
 			const list = queueList.slice(1, 9).map((song, i) => {
-				return `${i + 2}. [${song.name}](${song.url}) [${song.formattedDuration}]\n`;
+				return `${i + 2}. [${song.name}](${song.url}) [${
+					song.formattedDuration
+				}]\n`;
 			});
 
 			const songListEmbed = new EmbedBuilder()
 				.setColor('#dfa290')
 				.setTitle('Playlist')
 				.setDescription(
-					`${list.length !== 0 ? list.join(' ') : 'No additional songs to display'}\n`
+					`${
+						list.length !== 0
+							? list.join(' ')
+							: 'No additional songs to display'
+					}\n`
 				)
 				.addFields(
 					{
@@ -81,7 +92,9 @@ const callbackAction = async (interaction, client, distube) => {
 };
 
 module.exports = {
-	name: new SlashCommandBuilder().setName(commandName).setDescription(commandDesc),
+	name: new SlashCommandBuilder()
+		.setName(commandName)
+		.setDescription(commandDesc),
 	devOnly,
 	enabled,
 	function: callbackAction,

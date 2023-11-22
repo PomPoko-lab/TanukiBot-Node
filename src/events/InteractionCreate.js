@@ -12,7 +12,7 @@ const callbackAction = async (interaction) => {
 	// If not, return
 
 	// Match the interaction string to the name of the command
-	/** @type {import('../classes/ExtendedClient')} */
+	/** @type {import('../classes/utils/ExtendedClient')} */
 	// @ts-ignore
 	const client = interaction.client;
 
@@ -23,16 +23,24 @@ const callbackAction = async (interaction) => {
 			/** @type {import('../Interface/ICommand').ICommand} */
 			const command = client.commands.get(interaction.commandName);
 
-			if (!command) return clientLogger.error(`Couldn't find a matching command`);
+			if (!command)
+				return clientLogger.error(`Couldn't find a matching command`);
 
 			// Execute the command async
 			try {
 				clientLogger.log(
 					`Executing command for ${interaction.user.username}#${interaction.user.discriminator}: '${interaction.commandName}'`
 				);
-				await command.function(interaction, global.client, global.distube, global.db);
+				await command.function(
+					interaction,
+					global.client,
+					global.distube,
+					global.db
+				);
 			} catch (e) {
-				clientLogger.error(`Something went wrong executing command: '${interaction.commandName}'`);
+				clientLogger.error(
+					`Something went wrong executing command: '${interaction.commandName}'`
+				);
 			}
 			break;
 

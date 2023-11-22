@@ -1,17 +1,22 @@
 const { SlashCommandBuilder } = require('discord.js');
-const OpenAI = require('../classes/OpenAI');
+const OpenAI = require('../classes/utils/OpenAI');
 const { commands } = require('../commandDescriptions.json');
 
 const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
-	'OpenAI - Chat': { name: commandName, description: commandDesc, devOnly, enabled },
+	'OpenAI - Chat': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -24,8 +29,12 @@ const callbackAction = async (interaction, client, distube) => {
 	}
 
 	try {
-		clientLogger.log(`${interaction.user.username} sent a prompt to openAI. Prompt: ${prompt}`);
-		await interaction.reply("Processing your prompt.. You'll be notified when it is ready.");
+		clientLogger.log(
+			`${interaction.user.username} sent a prompt to openAI. Prompt: ${prompt}`
+		);
+		await interaction.reply(
+			"Processing your prompt.. You'll be notified when it is ready."
+		);
 
 		const response = await openai.getLanguageResponse(prompt);
 
@@ -53,7 +62,10 @@ module.exports = {
 		.setName(commandName)
 		.setDescription(commandDesc)
 		.addStringOption((option) =>
-			option.setName('prompt').setDescription('Input prompt').setRequired(true)
+			option
+				.setName('prompt')
+				.setDescription('Input prompt')
+				.setRequired(true)
 		),
 	devOnly,
 	enabled,

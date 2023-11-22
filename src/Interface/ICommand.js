@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../classes/ExtendedClient')} ExtendedClient
+ * @typedef {import('../classes/utils/ExtendedClient')} ExtendedClient
  * @typedef {import('distube').DisTube} DisTube
  * @typedef {import('discord.js').ChatInputCommandInteraction} ChatInputCommandInteraction
  *

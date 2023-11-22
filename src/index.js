@@ -1,4 +1,4 @@
-const InitSequence = require('./classes/initSequence');
+const InitSequence = require('./classes/utils/InitSequence');
 const dotenv = require('dotenv');
 const clientLogger = require('./utils/classes/ClientLogger');
 
@@ -7,7 +7,7 @@ const init = new InitSequence();
 /**
  * The global discordjs Client
  * @global
- * @type {import('./classes/ExtendedClient')}
+ * @type {import('./classes/utils/ExtendedClient')}
  */
 // TODO: Fix this
 // @ts-ignore
@@ -33,6 +33,7 @@ import('node-fetch')
 				 * @global
 				 * @type {import('pocketbase').default}
 				 */
+				// @ts-ignore
 				global.db = new Pocketbase(process.env.POCKETBASE_URL); // Replace with correct URL
 				clientLogger.log('Successfully connected to PocketBase');
 			})

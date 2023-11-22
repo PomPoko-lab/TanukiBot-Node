@@ -1,17 +1,25 @@
-const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel.js');
+const {
+	userInChannel,
+	hasQueue,
+} = require('../utils/classes/ValidateChannel.js');
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
 const clientLogger = require('../utils/classes/ClientLogger.js');
 
 const {
-	'DisTube - Shuffle Queue': { name: commandName, description: commandDesc, devOnly, enabled },
+	'DisTube - Shuffle Queue': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient.js')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -47,14 +55,20 @@ const callbackAction = async (interaction, client, distube) => {
 				const shuffledList = shuffledQueue.songs;
 
 				const list = shuffledList.slice(1, 9).map((song, i) => {
-					return `${i + 2}. [${song.name}](${song.url}) [${song.formattedDuration}]\n`;
+					return `${i + 2}. [${song.name}](${song.url}) [${
+						song.formattedDuration
+					}]\n`;
 				});
 
 				const songListEmbed = new EmbedBuilder()
 					.setColor('#dfa290')
 					.setTitle('Playlist')
 					.setDescription(
-						`${list.length !== 0 ? list.join(' ') : 'No additional songs to display'}\n`
+						`${
+							list.length !== 0
+								? list.join(' ')
+								: 'No additional songs to display'
+						}\n`
 					)
 					.addFields([
 						{
@@ -81,7 +95,9 @@ const callbackAction = async (interaction, client, distube) => {
 };
 
 module.exports = {
-	name: new SlashCommandBuilder().setName(commandName).setDescription(commandDesc),
+	name: new SlashCommandBuilder()
+		.setName(commandName)
+		.setDescription(commandDesc),
 	devOnly,
 	enabled,
 	function: callbackAction,

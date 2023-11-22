@@ -5,11 +5,11 @@ const { Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 const DisTube = require('distube').default;
 const ExtendedClient = require('./ExtendedClient');
 
-const clientLogger = require('../utils/classes/ClientLogger');
+const clientLogger = require('../../utils/classes/ClientLogger');
 
 /**
- * @typedef {import('../Interface/IEvent').IEvent} IEvent
- * @typedef {import('../Interface/ICommand').ICommand} ICommand
+ * @typedef {import('../../Interface/IEvent').IEvent} IEvent
+ * @typedef {import('../../Interface/ICommand').ICommand} ICommand
  * @typedef {import('distube').DisTubeEvents} DisTubeEvents
  * @typedef {import('discord.js').RESTPostAPIApplicationCommandsJSONBody} RESTPostAPIApplicationCommandsJSONBody
  */
@@ -76,7 +76,7 @@ class InitSequence {
 		commandFiles.forEach((file, index) => {
 			const filePath = path.join(commandsPath, file);
 
-			/** @type {import('../Interface/ICommand').ICommand} */
+			/** @type {import('../../Interface/ICommand').ICommand} */
 			const command = require(filePath);
 
 			if (!command.enabled) return;

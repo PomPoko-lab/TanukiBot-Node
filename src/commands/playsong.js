@@ -1,17 +1,25 @@
-const { userInChannel, isValidUrl } = require('../utils/classes/ValidateChannel');
+const {
+	userInChannel,
+	isValidUrl,
+} = require('../utils/classes/ValidateChannel');
 const { SlashCommandBuilder } = require('discord.js');
 const { commands } = require('../commandDescriptions.json');
 
 const clientLogger = require('../utils/classes/ClientLogger');
 
 const {
-	'DisTube - Play Song': { name: commandName, description: commandDesc, devOnly, enabled },
+	'DisTube - Play Song': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -21,7 +29,10 @@ const callbackAction = async (interaction, client, distube) => {
 	const voiceChannel = interaction?.member?.voice.channel;
 	const url = interaction.options.getString('url');
 
-	if (!userInChannel(voiceChannel, interaction) && !isValidUrl(url, interaction)) {
+	if (
+		!userInChannel(voiceChannel, interaction) &&
+		!isValidUrl(url, interaction)
+	) {
 		return;
 	}
 
@@ -39,7 +50,9 @@ const callbackAction = async (interaction, client, distube) => {
 
 			interaction.deleteReply();
 		} catch (err) {
-			interaction.editReply(`Couldn't play the song. Something went wrong.`);
+			interaction.editReply(
+				`Couldn't play the song. Something went wrong.`
+			);
 			clientLogger.error(err);
 		}
 	}
@@ -49,7 +62,9 @@ module.exports = {
 	name: new SlashCommandBuilder()
 		.setName(commandName)
 		.setDescription(commandDesc)
-		.addStringOption((option) => option.setName('url').setDescription('url of song from')),
+		.addStringOption((option) =>
+			option.setName('url').setDescription('url of song from')
+		),
 	devOnly,
 	enabled,
 	function: callbackAction,

@@ -44,7 +44,7 @@ let totalRedeemedUsers = 0;
 
 /**
  *
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @returns
  */
 const buildMainResponseEmbed = async (client) => {
@@ -75,6 +75,7 @@ const buildMainResponseEmbed = async (client) => {
 	/**
 	 * @type {import('pocketbase').RecordModel[]}
 	 */
+	// honkai_accounts.getAllaCcounts(selectedGameType, 'discord_user_id');
 	const allGameTypeUsers = await db
 		.collection('honkai_accounts')
 		.getFullList({
@@ -110,7 +111,7 @@ const buildMainResponseEmbed = async (client) => {
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} _
  * @param {import('pocketbase').default} db
  * @returns
@@ -236,6 +237,7 @@ const callbackAction = async (interaction, client, _, db) => {
 			const redemptionCodeGameType = existingCodeRecord.game_type;
 			let existingUserRecord;
 			try {
+				// honkai_accounts.getAccountByDiscordID(btnInteraction.user.id, 'id, game_type');
 				existingUserRecord = await db
 					.collection('honkai_accounts')
 					.getFirstListItem(
@@ -250,6 +252,7 @@ const callbackAction = async (interaction, client, _, db) => {
 						redemptionCodeGameType
 					)
 				) {
+					// honkai_accounts.getaccountbydiscordid(btninteraction.user.id, 'id, game_type');
 					await db
 						.collection('honkai_accounts')
 						.update(existingUserRecord.id, {
@@ -260,6 +263,7 @@ const callbackAction = async (interaction, client, _, db) => {
 						});
 				}
 			} catch (err) {
+				// honkai_accounts.createaccount(redemptioncodegametype, btninteraction.user.id);
 				existingUserRecord = await db
 					.collection('honkai_accounts')
 					.create({

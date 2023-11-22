@@ -4,7 +4,7 @@ const clientLogger = require('../utils/classes/ClientLogger');
 
 /**
  * Action to attach
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  */
 const callbackAction = (client) => {
 	client.user?.setPresence({

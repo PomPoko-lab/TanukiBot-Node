@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 const { Configuration, OpenAIApi } = require('openai');
 
-const clientLogger = require('../utils/classes/ClientLogger');
+const clientLogger = require('../../utils/classes/ClientLogger');
 
 module.exports = class OpenAI {
 	#openAi;
@@ -58,13 +58,18 @@ module.exports = class OpenAI {
 
 		// Replace the bot mention with the bot's persona name
 		const prompt = message.content.replace(`<@${botId}>`, personaName);
-		const messageContentWithUsernames = prompt.replace(/<@!?(\d+)>/g, (match, id) => {
-			const user = message.client.users.cache.get(id);
-			return user ? `${user.username}` : match;
-		});
+		const messageContentWithUsernames = prompt.replace(
+			/<@!?(\d+)>/g,
+			(match, id) => {
+				const user = message.client.users.cache.get(id);
+				return user ? `${user.username}` : match;
+			}
+		);
 
 		if (!prompt) {
-			clientLogger.error('No prompt specified when trying to get an AI response.');
+			clientLogger.error(
+				'No prompt specified when trying to get an AI response.'
+			);
 			return;
 		}
 
@@ -96,7 +101,9 @@ module.exports = class OpenAI {
 			clientLogger.log(replyMessage);
 			clientLogger.log(`Response length: ${replyMessage.length}`);
 		} else {
-			clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
+			clientLogger.error(
+				`OpenAI Response was undefined for prompt: ${prompt}.`
+			);
 		}
 
 		return response.data.choices[0].message?.content;
@@ -139,7 +146,9 @@ module.exports = class OpenAI {
 			clientLogger.log(replyMessage);
 			clientLogger.log(`Response length: ${replyMessage.length}`);
 		} else {
-			clientLogger.error(`OpenAI Response was undefined for prompt: ${prompt}.`);
+			clientLogger.error(
+				`OpenAI Response was undefined for prompt: ${prompt}.`
+			);
 		}
 
 		return response.data.choices[0].message?.content;
