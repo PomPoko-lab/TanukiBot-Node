@@ -53,24 +53,28 @@ const buildMainResponseEmbed = async (client) => {
 	let value = '';
 
 	// TODO: Sanitize some user inputs
-	existingCodeRecord = await db
-		.collection('honkai_game_codes')
-		.getFirstListItem(`redemption_code="${redemptionCode}"`, {
-			expand: 'redeemed_users',
-		});
-
-	if (Object.keys(existingCodeRecord).length === 0) {
+	try {
+		existingCodeRecord = await db
+			.collection('honkai_game_codes')
+			.getFirstListItem(`redemption_code="${redemptionCode}"`, {
+				expand: 'redeemed_users',
+			});
+	} catch (err) {
+		if (err.response.code !== 404) {
+			clientLogger.error(err);
+		}
 		existingCodeRecord = await db.collection('honkai_game_codes').create({
 			game_type: selectedGameType,
 			redemption_code: redemptionCode,
 		});
 	}
 
-	redeemed_users = existingCodeRecord.expand?.redeemed_users.map(
-		(/** @type {import('discord.js').User} */ userRecord) =>
-			// @ts-ignore
-			userRecord.discord_user_id
-	);
+	redeemed_users =
+		existingCodeRecord.expand?.redeemed_users.map(
+			(/** @type {import('discord.js').User} */ userRecord) =>
+				// @ts-ignore
+				userRecord.discord_user_id
+		) ?? [];
 
 	/**
 	 * @type {import('pocketbase').RecordModel[]}
@@ -93,7 +97,7 @@ const buildMainResponseEmbed = async (client) => {
 	totalRedeemedUsers = redeemed_users.length;
 
 	allGameTypeDiscordUsers.forEach((user) => {
-		const userHasRedeemed = redeemed_users.includes(user.id);
+		const userHasRedeemed = redeemed_users.includes(user.id) ?? false;
 
 		if (userHasRedeemed) {
 			value += `- ${user.tag}\n`;
