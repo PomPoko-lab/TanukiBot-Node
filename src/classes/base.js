@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const clientLogger = require('../utils/classes/ClientLogger');
 
 /**
  * @class Base
@@ -7,6 +8,7 @@ const dotenv = require('dotenv');
 class Base {
 	constructor() {
 		dotenv.config();
+		this.logger = clientLogger;
 		import('node-fetch')
 			.then((fetch) => {
 				// @ts-ignore

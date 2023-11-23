@@ -1,0 +1,44 @@
+const Base = require('./base');
+
+/**
+ * @typedef {import('pocketbase').default} Pocketbase
+ * @typedef {import('./utils/classes/ClientLogger.js')} ClientLogger
+ * @typedef {import('pocketbase').RecordModel[]} RecordModel[]
+ * @typedef {import('pocketbase').RecordModel} RecordModel
+ */
+
+/**
+ * @class HonkaiAccounts
+ * @extends {Base}
+ */
+class HonkaiAccounts extends Base {
+	/** @type {Pocketbase} */
+	db;
+	/** @type {ClientLogger} */
+	logger;
+	collection = 'honkai_accounts';
+
+	constructor() {
+		super();
+	}
+
+	// /**
+	//  * Get all accounts from a specific game type or all game types if
+	//  * none is specified
+	//  * @param {string} gameTypeID
+	//  * @param {string} fields
+	//  * @returns {Promise<RecordModel[]>}
+	//  */
+	// getAllAccounts(gameTypeID, fields) {
+	// 	let filter = 'active=true';
+
+	// 	if (gameTypeID) {
+	// 		filter += ` && game_type.id ?= "${gameTypeID}"`;
+	// 	}
+
+	// 	return this.db.collection(this.collection).getFullList({
+	// 		filter,
+	// 		fields,
+	// 	});
+	// }
+}

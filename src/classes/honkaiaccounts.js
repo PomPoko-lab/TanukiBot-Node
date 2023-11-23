@@ -2,6 +2,7 @@ const Base = require('./base');
 
 /**
  * @typedef {import('pocketbase').default} Pocketbase
+ * @typedef {import('./utils/classes/ClientLogger.js')} ClientLogger
  * @typedef {import('pocketbase').RecordModel[]} RecordModel[]
  * @typedef {import('pocketbase').RecordModel} RecordModel
  */
@@ -13,6 +14,8 @@ const Base = require('./base');
 class HonkaiAccounts extends Base {
 	/** @type {Pocketbase} */
 	db;
+	/** @type {ClientLogger} */
+	logger;
 	collection = 'honkai_accounts';
 
 	constructor() {
