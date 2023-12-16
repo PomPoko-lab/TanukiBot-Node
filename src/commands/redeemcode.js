@@ -12,6 +12,7 @@ const {
 const { commands } = require('../commandDescriptions.json');
 
 const clientLogger = require('../utils/classes/ClientLogger');
+const _HonkaiGameCodes = require('../classes/honkaigamecodes');
 
 const {
 	'System - Redeem Code': {
@@ -22,59 +23,45 @@ const {
 	},
 } = commands;
 
-let redemptionCode = '';
-let selectedGameType = '';
+// let redemptionCode = '';
+// let selectedGameType = '';
 /**
  * @type {import('discord.js').User[]}
  */
-let allGameTypeDiscordUsers = [];
+// let allGameTypeDiscordUsers = [];
 
 /**
- * @type {import('pocketbase').RecordModel}}
+ * @type {import('pocketbase').RecordModel?}}
  */
-let existingCodeRecord;
+// let existingCodeRecord;
 
 /**
  * @type {string[]}
  */
-let redeemed_users = [];
+// let redeemed_users = [];
 
-let totalUsers = 0;
-let totalRedeemedUsers = 0;
+// let totalUsers = 0;
+// let totalRedeemedUsers = 0;
 
 /**
- *
+ * Creates the main embed response
  * @param {import('../classes/utils/ExtendedClient')} client
+ * @param {import('pocketbase').RecordModel?} existingCodeRecord
  * @returns
  */
-const buildMainResponseEmbed = async (client) => {
+const buildMainResponseEmbed = async (client, existingCodeRecord) => {
 	// @ts-ignore
 	const db = global.db;
 	let value = '';
 
-	// TODO: Sanitize some user inputs
-	try {
-		existingCodeRecord = await db
-			.collection('honkai_game_codes')
-			.getFirstListItem(`redemption_code="${redemptionCode}"`, {
-				expand: 'redeemed_users',
-			});
-	} catch (err) {
-		if (err.response.code !== 404) {
-			clientLogger.error(err);
-		}
-		existingCodeRecord = await db.collection('honkai_game_codes').create({
-			game_type: selectedGameType,
-			redemption_code: redemptionCode,
-		});
-	}
-
-	redeemed_users =
-		existingCodeRecord.expand?.redeemed_users.map(
+	const redeemed_users =
+		existingCodeRecord?.expand?.redeemed_users.map(
 			(/** @type {import('discord.js').User} */ userRecord) =>
 				// @ts-ignore
 				userRecord.discord_user_id
 		) ?? [];
+
+	const gameTypeId = existingCodeRecord?.game_type;
 
 	/**
 	 * @type {import('pocketbase').RecordModel[]}
@@ -83,18 +70,18 @@ const buildMainResponseEmbed = async (client) => {
 	const allGameTypeUsers = await db
 		.collection('honkai_accounts')
 		.getFullList({
-			filter: `game_type.id ?= "${selectedGameType}" && active=true`,
+			filter: `game_type.id ?= "${gameTypeId}" && active=true`,
 			fields: 'discord_user_id',
 		});
 
-	allGameTypeDiscordUsers = await Promise.all(
+	const allGameTypeDiscordUsers = await Promise.all(
 		allGameTypeUsers.map(
 			async (user) => await client.users.fetch(user.discord_user_id)
 		)
 	);
 
-	totalUsers = allGameTypeUsers.length;
-	totalRedeemedUsers = redeemed_users.length;
+	const totalUsers = allGameTypeUsers.length;
+	const totalRedeemedUsers = redeemed_users.length;
 
 	allGameTypeDiscordUsers.forEach((user) => {
 		const userHasRedeemed = redeemed_users.includes(user.id) ?? false;
@@ -125,7 +112,7 @@ const buildMainResponseEmbed = async (client) => {
  * @returns
  */
 const callbackAction = async (interaction, client, _, db) => {
-	redemptionCode = interaction.options.getString('code') ?? '';
+	let redemptionCode = interaction.options.getString('code') ?? '';
 	if (!redemptionCode) {
 		return interaction.reply('No redemption code provided.');
 	}
@@ -180,7 +167,7 @@ const callbackAction = async (interaction, client, _, db) => {
 			return interaction.editReply('No game type selected.');
 		}
 
-		selectedGameType = userGameTypeResponse.values[0];
+		const selectedGameType = userGameTypeResponse.values[0];
 		const selectedGameFromList = gamesList.find(
 			(game) => game.id === selectedGameType
 		);
@@ -197,14 +184,48 @@ const callbackAction = async (interaction, client, _, db) => {
 			.setDescription(`Redemption Code: ${redemptionCode}`)
 			.setURL(redemptionUrl.toString());
 
-		const embedFields = await buildMainResponseEmbed(client);
+		// // TODO: Sanitize some user inputs
+		// try {
+		// 	existingCodeRecord = await db
+		// 		.collection('honkai_game_codes')
+		// 		.getFirstListItem(`redemption_code="${redemptionCode}"`, {
+		// 			expand: 'redeemed_users',
+		// 		});
+		// } catch (err) {
+		// 	if (err.response.code !== 404) {
+		// 		clientLogger.error(err);
+		// 	}
+		// 	existingCodeRecord = await db
+		// 		.collection('honkai_game_codes')
+		// 		.create({
+		// 			game_type: selectedGameType,
+		// 			redemption_code: redemptionCode,
+		// 		});
+		// }
+		const HonkaiGameCodes = new _HonkaiGameCodes();
+		let existingCodeRecord = await HonkaiGameCodes.getGameCode(
+			selectedGameFromList.id,
+			redemptionCode
+		);
+
+		if (!existingCodeRecord) {
+			existingCodeRecord = await HonkaiGameCodes.addGameCode(
+				selectedGameFromList.id,
+				redemptionCode
+			);
+		}
+
+		const embedFields = await buildMainResponseEmbed(
+			client,
+			existingCodeRecord
+		);
 
 		if (Object.keys(embedFields).length > 0) {
 			replyEmbed.addFields(embedFields);
 		}
 
 		const markRedeemedBtn = new ButtonBuilder()
-			.setCustomId('mark_redeemed')
+			.setCustomId(redemptionCode)
 			.setLabel('Mark as Redeemed')
 			.setStyle(ButtonStyle.Success);
 
@@ -225,6 +246,27 @@ const callbackAction = async (interaction, client, _, db) => {
 		markRedeemedCollector.on('collect', async (btnInteraction) => {
 			// TODO: Refactor this to make a new fetch request to get the latest record
 			// Just break buildMainResponseEmbed up since it's doing too much
+			const redemptionCode = btnInteraction.customId;
+			const HonkaiGameCodes = new _HonkaiGameCodes();
+			existingCodeRecord = await HonkaiGameCodes.getGameCode(
+				selectedGameFromList.id,
+				redemptionCode
+			);
+
+			if (!existingCodeRecord) {
+				existingCodeRecord = await HonkaiGameCodes.addGameCode(
+					selectedGameFromList.id,
+					redemptionCode
+				);
+			}
+
+			const redeemed_users =
+				existingCodeRecord?.redeemed_users.map(
+					(/** @type {import('discord.js').User} */ userRecord) =>
+						// @ts-ignore
+						userRecord.discord_user_id
+				) ?? [];
+
 			const userHasAlreadyRedeemed = redeemed_users.includes(
 				btnInteraction.user.id
 			);
@@ -301,10 +343,14 @@ const callbackAction = async (interaction, client, _, db) => {
 				btnReply.delete();
 			}, 10000);
 
-			redeemed_users.push(btnInteraction.user.id);
-			totalRedeemedUsers++;
+			existingCodeRecord?.redeemed_users.push({
+				discord_user_id: btnInteraction.user.id,
+			});
 
-			let embedFields = await buildMainResponseEmbed(client);
+			let embedFields = await buildMainResponseEmbed(
+				client,
+				existingCodeRecord
+			);
 			replyEmbed.setFields(embedFields);
 
 			userMarkRedeemResponse.edit({
