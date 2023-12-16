@@ -3,7 +3,6 @@ const Base = require('./base');
 /**
  * @typedef {import('pocketbase').default} Pocketbase
  * @typedef {import('utils/classes/ClientLogger.js')} ClientLogger
- * @typedef {import('pocketbase').RecordModel[]} RecordModel[]
  * @typedef {import('pocketbase').RecordModel} RecordModel
  */
 
@@ -12,16 +11,21 @@ const Base = require('./base');
  * @extends {Base}
  */
 class HonkaiGameCodes extends Base {
-	/** @type {Pocketbase} */
-	db;
-	/** @type {ClientLogger} */
-	logger;
 	collection = 'honkai_game_codes';
 
 	constructor() {
 		super();
+		/** @type {Pocketbase} */
+		this.db;
+		/** @type {ClientLogger} */
+		this.logger;
 	}
 
+	/**
+	 * Removes whitespace and converts to uppercase for consistency
+	 * @param {string} code
+	 * @returns string
+	 */
 	formatCode(code) {
 		return code.trim().toUpperCase();
 	}
@@ -46,13 +50,13 @@ class HonkaiGameCodes extends Base {
 	 * Retrieves a game code from the database
 	 * @param {string} gameTypeID
 	 * @param {string} code
-	 * @returns {Promise<RecordModel>}
+	 * @returns {Promise<RecordModel?>}
 	 */
 	async getGameCode(gameTypeID, code) {
 		code = this.formatCode(code);
 
-		/** @type {RecordModel} */
-		let codeRecord = [];
+		/** @type {RecordModel?} */
+		let codeRecord = null;
 
 		try {
 			codeRecord = await this.db
@@ -60,7 +64,9 @@ class HonkaiGameCodes extends Base {
 				.getFirstListItem(
 					`game_type="${gameTypeID}" && redemption_code="${code}"`
 				);
-		} catch (err) {}
+		} catch (err) {
+			this.logger.error(err);
+		}
 		return codeRecord;
 	}
 
@@ -84,3 +90,5 @@ class HonkaiGameCodes extends Base {
 	// 	});
 	// }
 }
+
+module.exports = HonkaiGameCodes;

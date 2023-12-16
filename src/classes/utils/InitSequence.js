@@ -178,6 +178,7 @@ class InitSequence {
 		const devCommands = [];
 		/** @type ICommand | RESTPostAPIApplicationCommandsJSONBody[] */
 		const commands = [];
+		console.log(commandsPath, commands);
 		const commandFiles = fs.readdirSync(commandsPath).filter((file) => {
 			return file.endsWith('.js');
 		});
