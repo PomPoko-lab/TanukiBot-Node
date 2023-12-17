@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const OpenAI = require('../classes/OpenAI');
+const OpenAI = require('../classes/utils/OpenAI');
 
 const clientLogger = require('../utils/classes/ClientLogger');
 
@@ -36,7 +36,7 @@ const botReplyToUser = async (message, botId) => {
  * @returns
  */
 const callbackAction = async (message) => {
-	/** @type {import('../classes/ExtendedClient')} */
+	/** @type {import('../classes/utils/ExtendedClient')} */
 	// @ts-ignore
 	const client = message.client;
 	const user = message.author;
@@ -59,10 +59,14 @@ const callbackAction = async (message) => {
 
 	if (message.content.includes('deez')) {
 		try {
-			clientLogger.log(`Gave ${user.username}#${user.discriminator} some of deez nuts..`);
+			clientLogger.log(
+				`Gave ${user.username}#${user.discriminator} some of deez nuts..`
+			);
 			await message.reply('nuts');
 		} catch (e) {
-			clientLogger.error(`Something went wrong executing command: 'deez'`);
+			clientLogger.error(
+				`Something went wrong executing command: 'deez'`
+			);
 		}
 	}
 };

@@ -3,9 +3,6 @@
 # dependencies
 /node_modules
 
-# VSCode settings
-/.vscode
-
 # build files
 /build
 

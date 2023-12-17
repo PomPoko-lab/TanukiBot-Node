@@ -5,11 +5,11 @@ const { Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 const DisTube = require('distube').default;
 const ExtendedClient = require('./ExtendedClient');
 
-const clientLogger = require('../utils/classes/ClientLogger');
+const clientLogger = require('../../utils/classes/ClientLogger');
 
 /**
- * @typedef {import('../Interface/IEvent').IEvent} IEvent
- * @typedef {import('../Interface/ICommand').ICommand} ICommand
+ * @typedef {import('../../Interface/IEvent').IEvent} IEvent
+ * @typedef {import('../../Interface/ICommand').ICommand} ICommand
  * @typedef {import('distube').DisTubeEvents} DisTubeEvents
  * @typedef {import('discord.js').RESTPostAPIApplicationCommandsJSONBody} RESTPostAPIApplicationCommandsJSONBody
  */
@@ -68,7 +68,7 @@ class InitSequence {
 	 * @private
 	 */
 	loadDiscordCommandFiles() {
-		const commandsPath = path.join(__dirname, '..', 'commands');
+		const commandsPath = path.join(__dirname, '..', '..', 'commands');
 		const commandFiles = fs
 			.readdirSync(commandsPath)
 			.filter((file) => file.endsWith('.js'));
@@ -76,7 +76,7 @@ class InitSequence {
 		commandFiles.forEach((file, index) => {
 			const filePath = path.join(commandsPath, file);
 
-			/** @type {import('../Interface/ICommand').ICommand} */
+			/** @type {import('../../Interface/ICommand').ICommand} */
 			const command = require(filePath);
 
 			if (!command.enabled) return;
@@ -104,7 +104,7 @@ class InitSequence {
 	 * @private
 	 */
 	loadDiscordEventFiles() {
-		const eventsPath = path.join(__dirname, '..', 'events');
+		const eventsPath = path.join(__dirname, '..', '..', 'events');
 		const eventFiles = fs
 			.readdirSync(eventsPath)
 			.filter((file) => file.endsWith('.js'));
@@ -139,7 +139,13 @@ class InitSequence {
 	 */
 	loadDistubeAssets() {
 		clientLogger.log('Importing DisTube Events..');
-		const eventsPath = path.join(__dirname, '..', 'events', 'distube');
+		const eventsPath = path.join(
+			__dirname,
+			'..',
+			'..',
+			'events',
+			'distube'
+		);
 		const eventFiles = fs
 			.readdirSync(eventsPath)
 			.filter((file) => file.endsWith('.js'));
@@ -167,7 +173,7 @@ class InitSequence {
 	 * @private
 	 */
 	async deployCommands() {
-		const commandsPath = path.join(__dirname, '..', 'commands');
+		const commandsPath = path.join(__dirname, '..', '..', 'commands');
 		/** @type ICommand | RESTPostAPIApplicationCommandsJSONBody[] */
 		const devCommands = [];
 		/** @type ICommand | RESTPostAPIApplicationCommandsJSONBody[] */

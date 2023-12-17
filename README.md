@@ -1,4 +1,4 @@
-# TanukiBot-NodeV2.1
+# TanukiBot-NodeV2.2
 
 A personalized Discord Bot coded in NodeJS.
 

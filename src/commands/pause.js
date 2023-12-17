@@ -3,13 +3,18 @@ const { userInChannel, hasQueue } = require('../utils/classes/ValidateChannel');
 const { commands } = require('../commandDescriptions.json');
 
 const {
-	'DisTube - Pause Queue': { name: commandName, description: commandDesc, devOnly, enabled },
+	'DisTube - Pause Queue': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -55,7 +60,9 @@ const callbackAction = async (interaction, client, distube) => {
 };
 
 module.exports = {
-	name: new SlashCommandBuilder().setName(commandName).setDescription(commandDesc),
+	name: new SlashCommandBuilder()
+		.setName(commandName)
+		.setDescription(commandDesc),
 	devOnly,
 	enabled,
 	function: callbackAction,

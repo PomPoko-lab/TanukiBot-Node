@@ -7,7 +7,7 @@ const clientLogger = require('../utils/classes/ClientLogger');
 /**
  * Action to attach
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('../classes/ExtendedClient')} client
+ * @param {import('../classes/utils/ExtendedClient')} client
  * @param {import('distube').DisTube} distube
  * @returns
  */
@@ -42,11 +42,18 @@ const callbackAction = async (interaction, client, distube) => {
 };
 
 const {
-	'DisTube - Stop Song': { name: commandName, description: commandDesc, devOnly, enabled },
+	'DisTube - Stop Song': {
+		name: commandName,
+		description: commandDesc,
+		devOnly,
+		enabled,
+	},
 } = commands;
 
 module.exports = {
-	name: new SlashCommandBuilder().setName(commandName).setDescription(commandDesc),
+	name: new SlashCommandBuilder()
+		.setName(commandName)
+		.setDescription(commandDesc),
 	devOnly,
 	enabled,
 	function: callbackAction,
