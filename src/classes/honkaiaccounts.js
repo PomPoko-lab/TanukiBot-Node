@@ -26,50 +26,81 @@ class HonkaiAccounts extends Base {
 	 * none is specified
 	 * @param {string} gameTypeID
 	 * @param {string} fields
-	 * @returns {Promise<RecordModel[]>}
+	 * @returns {Promise<RecordModel[]?>}
 	 */
-	getAllAccounts(gameTypeID, fields) {
+	async getAllAccounts(gameTypeID, fields) {
+		let records = null;
 		let filter = 'active=true';
 
 		if (gameTypeID) {
 			filter += ` && game_type.id ?= "${gameTypeID}"`;
 		}
 
-		return this.db.collection(this.collection).getFullList({
-			filter,
-			fields,
-		});
+		try {
+			records = await this.db.collection(this.collection).getFullList({
+				filter,
+				fields,
+			});
+		} catch (err) {
+			// @ts-ignore
+			const errorCode = err.code;
+			if (errorCode !== 404) {
+				this.logger.error(err);
+			}
+		}
+
+		return records;
 	}
 
 	/**
 	 * Get a discord user's account by their discord user ID
 	 * @param {string} discordUserID
 	 * @param {string} fields
-	 * @returns {Promise<RecordModel>}
+	 * @returns {Promise<RecordModel?>}
 	 */
-	getAccountByDiscordID(discordUserID, fields) {
-		return this.db
-			.collection(this.collection)
-			.getFirstListItem(
-				`discord_user_id="${discordUserID} && active=true"`,
-				{
-					fields,
-				}
-			);
+	async getAccountByDiscordID(discordUserID, fields) {
+		let record = null;
+
+		try {
+			record = await this.db
+				.collection(this.collection)
+				.getFirstListItem(
+					`discord_user_id="${discordUserID}" && active=true`,
+					{
+						fields,
+					}
+				);
+		} catch (err) {
+			// @ts-ignore
+			const errorCode = err.code;
+			if (errorCode !== 404) {
+				this.logger.error(err);
+			}
+		}
+
+		return record;
 	}
 
 	/**
 	 * Link a discord user to an account
 	 * @param {string} gameTypeID
 	 * @param {string} discordUserID
-	 * @returns
+	 * @returns {Promise<RecordModel>}
 	 */
-	createAccount(gameTypeID, discordUserID) {
-		return this.db.collection(this.collection).create({
-			game_type: gameTypeID,
-			discord_user_id: discordUserID,
-			active: true,
-		});
+	async createAccount(gameTypeID, discordUserID) {
+		let record = null;
+
+		try {
+			record = await this.db.collection(this.collection).create({
+				game_type: gameTypeID,
+				discord_user_id: discordUserID,
+				active: true,
+			});
+		} catch (err) {
+			throw err;
+		}
+
+		return record;
 	}
 }
 

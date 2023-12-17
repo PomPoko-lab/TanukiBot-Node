@@ -13,6 +13,7 @@ const { commands } = require('../commandDescriptions.json');
 
 const clientLogger = require('../utils/classes/ClientLogger');
 const _HonkaiGameCodes = require('../classes/honkaigamecodes');
+const _HonkaiAccounts = require('../classes/honkaiaccounts');
 
 const {
 	'System - Redeem Code': {
@@ -54,13 +55,7 @@ const buildMainResponseEmbed = async (client, existingCodeRecord) => {
 	const db = global.db;
 	let value = '';
 
-	const redeemed_users =
-		existingCodeRecord?.expand?.redeemed_users.map(
-			(/** @type {import('discord.js').User} */ userRecord) =>
-				// @ts-ignore
-				userRecord.discord_user_id
-		) ?? [];
-
+	const redeemed_users = existingCodeRecord?.redeemed_users ?? [];
 	const gameTypeId = existingCodeRecord?.game_type;
 
 	/**
@@ -71,7 +66,7 @@ const buildMainResponseEmbed = async (client, existingCodeRecord) => {
 		.collection('honkai_accounts')
 		.getFullList({
 			filter: `game_type.id ?= "${gameTypeId}" && active=true`,
-			fields: 'discord_user_id',
+			fields: 'id, discord_user_id',
 		});
 
 	const allGameTypeDiscordUsers = await Promise.all(
@@ -84,7 +79,10 @@ const buildMainResponseEmbed = async (client, existingCodeRecord) => {
 	const totalRedeemedUsers = redeemed_users.length;
 
 	allGameTypeDiscordUsers.forEach((user) => {
-		const userHasRedeemed = redeemed_users.includes(user.id) ?? false;
+		const userRecordID = allGameTypeUsers.find(
+			(userRecord) => userRecord.discord_user_id === user.id
+		)?.id;
+		const userHasRedeemed = redeemed_users.includes(userRecordID) ?? false;
 
 		if (userHasRedeemed) {
 			value += `- ${user.tag}\n`;
@@ -185,23 +183,6 @@ const callbackAction = async (interaction, client, _, db) => {
 			.setURL(redemptionUrl.toString());
 
 		// // TODO: Sanitize some user inputs
-		// try {
-		// 	existingCodeRecord = await db
-		// 		.collection('honkai_game_codes')
-		// 		.getFirstListItem(`redemption_code="${redemptionCode}"`, {
-		// 			expand: 'redeemed_users',
-		// 		});
-		// } catch (err) {
-		// 	if (err.response.code !== 404) {
-		// 		clientLogger.error(err);
-		// 	}
-		// 	existingCodeRecord = await db
-		// 		.collection('honkai_game_codes')
-		// 		.create({
-		// 			game_type: selectedGameType,
-		// 			redemption_code: redemptionCode,
-		// 		});
-		// }
 		const HonkaiGameCodes = new _HonkaiGameCodes();
 		let existingCodeRecord = await HonkaiGameCodes.getGameCode(
 			selectedGameFromList.id,
@@ -247,40 +228,10 @@ const callbackAction = async (interaction, client, _, db) => {
 			// TODO: Refactor this to make a new fetch request to get the latest record
 			// Just break buildMainResponseEmbed up since it's doing too much
 			const redemptionCode = btnInteraction.customId;
+			const userDiscordID = btnInteraction.user.id;
 			const HonkaiGameCodes = new _HonkaiGameCodes();
-			existingCodeRecord = await HonkaiGameCodes.getGameCode(
-				selectedGameFromList.id,
-				redemptionCode
-			);
+			const HonkaiAccounts = new _HonkaiAccounts();
 
-			if (!existingCodeRecord) {
-				existingCodeRecord = await HonkaiGameCodes.addGameCode(
-					selectedGameFromList.id,
-					redemptionCode
-				);
-			}
-
-			const redeemed_users =
-				existingCodeRecord?.redeemed_users.map(
-					(/** @type {import('discord.js').User} */ userRecord) =>
-						// @ts-ignore
-						userRecord.discord_user_id
-				) ?? [];
-
-			const userHasAlreadyRedeemed = redeemed_users.includes(
-				btnInteraction.user.id
-			);
-			if (userHasAlreadyRedeemed) {
-				const btnReply = await btnInteraction.reply({
-					content: 'You have already redeemed this code.',
-					ephemeral: true,
-				});
-
-				setTimeout(() => {
-					btnReply.delete();
-				}, 10000);
-				return;
-			}
 			let replyContent = '';
 			/**
 			 * @type {string}
@@ -291,22 +242,38 @@ const callbackAction = async (interaction, client, _, db) => {
 			const redemptionCodeGameType = existingCodeRecord.game_type;
 			let existingUserRecord;
 			try {
-				// honkai_accounts.getAccountByDiscordID(btnInteraction.user.id, 'id, game_type');
-				existingUserRecord = await db
-					.collection('honkai_accounts')
-					.getFirstListItem(
-						`discord_user_id="${btnInteraction.user.id}" && active=true`,
-						{
-							fields: 'id, game_type',
-						}
+				const existingCodeRecord = await HonkaiGameCodes.getGameCode(
+					selectedGameFromList.id,
+					redemptionCode
+				);
+
+				if (!existingCodeRecord) {
+					btnInteraction.reply({
+						content: 'No redemption code found.',
+						ephemeral: true,
+					});
+					return;
+				}
+
+				existingUserRecord = await HonkaiAccounts.getAccountByDiscordID(
+					userDiscordID,
+					'id, game_type'
+				);
+
+				if (!existingUserRecord) {
+					existingUserRecord = await HonkaiAccounts.createAccount(
+						redemptionCodeGameType,
+						userDiscordID
 					);
+
+					replyContent += `Your discord account has been linked to a ${selectedGameFromList.name} account.\n`;
+				}
 
 				if (
 					!existingUserRecord.game_type.includes(
 						redemptionCodeGameType
 					)
 				) {
-					// honkai_accounts.getaccountbydiscordid(btninteraction.user.id, 'id, game_type');
 					await db
 						.collection('honkai_accounts')
 						.update(existingUserRecord.id, {
@@ -316,48 +283,59 @@ const callbackAction = async (interaction, client, _, db) => {
 							],
 						});
 				}
-			} catch (err) {
-				// honkai_accounts.createaccount(redemptioncodegametype, btninteraction.user.id);
-				existingUserRecord = await db
-					.collection('honkai_accounts')
-					.create({
-						discord_user_id: btnInteraction.user.id,
-						game_type: [redemptionCodeGameType],
-						active: true,
+
+				const userHasAlreadyRedeemed =
+					existingCodeRecord.redeemed_users.includes(
+						existingUserRecord.id
+					);
+				if (userHasAlreadyRedeemed) {
+					const btnReply = await btnInteraction.reply({
+						content: 'You have already redeemed this code.',
+						ephemeral: true,
 					});
-				replyContent += `Your discord account has been linked to a ${selectedGameFromList.name} account.\n`;
+
+					setTimeout(() => {
+						btnReply.delete();
+					}, 10000);
+					return;
+				}
+
+				await db
+					.collection('honkai_game_codes')
+					.update(redemptionCodeId, {
+						'redeemed_users+': existingUserRecord.id,
+					});
+				replyContent += `Successfully marked as redeemed.`;
+
+				const btnReply = await btnInteraction.reply({
+					content: replyContent,
+					ephemeral: true,
+				});
+
+				setTimeout(() => {
+					btnReply.delete();
+				}, 10000);
+
+				existingCodeRecord?.redeemed_users.push(existingUserRecord.id);
+
+				let embedFields = await buildMainResponseEmbed(
+					client,
+					existingCodeRecord
+				);
+				replyEmbed.setFields(embedFields);
+
+				userMarkRedeemResponse.edit({
+					embeds: [replyEmbed],
+					// @ts-ignore - We don't need to define the Component type in the ActionRowBuilder
+					components: [actionRow],
+				});
+			} catch (err) {
+				clientLogger.error(err);
+				btnInteraction.reply({
+					content: 'An error occurred. Please try again.',
+					ephemeral: true,
+				});
 			}
-
-			await db.collection('honkai_game_codes').update(redemptionCodeId, {
-				'redeemed_users+': existingUserRecord.id,
-			});
-
-			replyContent += `Successfully marked as redeemed.`;
-
-			const btnReply = await btnInteraction.reply({
-				content: replyContent,
-				ephemeral: true,
-			});
-
-			setTimeout(() => {
-				btnReply.delete();
-			}, 10000);
-
-			existingCodeRecord?.redeemed_users.push({
-				discord_user_id: btnInteraction.user.id,
-			});
-
-			let embedFields = await buildMainResponseEmbed(
-				client,
-				existingCodeRecord
-			);
-			replyEmbed.setFields(embedFields);
-
-			userMarkRedeemResponse.edit({
-				embeds: [replyEmbed],
-				// @ts-ignore - We don't need to define the Component type in the ActionRowBuilder
-				components: [actionRow],
-			});
 		});
 	} catch (err) {
 		clientLogger.error(err);

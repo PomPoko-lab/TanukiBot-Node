@@ -30,11 +30,16 @@ class HonkaiGameCodes extends Base {
 		return code.trim().toUpperCase();
 	}
 
+	/**
+	 *
+	 * @param {string} gameTypeID
+	 * @param {string} code
+	 * @returns {Promise<RecordModel?>}
+	 */
 	async addGameCode(gameTypeID, code) {
 		code = this.formatCode(code);
 
-		/** @type {RecordModel} */
-		let newCodeRecord = [];
+		let newCodeRecord = null;
 		try {
 			newCodeRecord = await this.db.collection(this.collection).create({
 				game_type: gameTypeID,
@@ -55,7 +60,6 @@ class HonkaiGameCodes extends Base {
 	async getGameCode(gameTypeID, code) {
 		code = this.formatCode(code);
 
-		/** @type {RecordModel?} */
 		let codeRecord = null;
 
 		try {
@@ -65,7 +69,11 @@ class HonkaiGameCodes extends Base {
 					`game_type="${gameTypeID}" && redemption_code="${code}"`
 				);
 		} catch (err) {
-			this.logger.error(err);
+			// @ts-ignore
+			const errorCode = err.code;
+			if (errorCode !== 404) {
+				this.logger.error(err);
+			}
 		}
 		return codeRecord;
 	}
