@@ -12,10 +12,11 @@
 	"dependencies": {
 		"@discordjs/opus": "^0.9.0",
 		"@discordjs/voice": "^0.16.1",
+		"@distube/youtube": "^1.0.2",
 		"@distube/ytdl-core": "^4.13.3",
 		"axios": "^1.6.2",
 		"discord.js": "^14.14.1",
-		"distube": "^4.1.1",
+		"distube": "^5.0.2",
 		"dotenv": "^16.3.1",
 		"find-process": "^1.4.7",
 		"libsodium-wrappers": "^0.7.13",

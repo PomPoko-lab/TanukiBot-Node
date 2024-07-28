@@ -3,9 +3,12 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const { Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 const DisTube = require('distube').default;
+const { YouTubePlugin } = require('@distube/youtube');
+const ytdl = require('@distube/ytdl-core');
 const ExtendedClient = require('./ExtendedClient');
 
 const clientLogger = require('../../utils/classes/ClientLogger');
+const { isVoiceChannelEmpty } = require('distube');
 
 /**
  * @typedef {import('../../Interface/IEvent').IEvent} IEvent
@@ -30,10 +33,21 @@ class InitSequence {
 		});
 		this.loadDiscordJSAssets();
 
+        // type YouTubePluginOptions = {
+        //     cookies?: ytdl.Cookie[];
+        //     ytdlOptions?: ytdl.getInfoOptions;
+        // };
+        const ytCookiesJsonPath = path.resolve(__dirname, '../../config/youtube_cookies.json');
+        /** @type {ytdl.Cookie[]} */
+        const youtubeCookies = JSON.parse(fs.readFileSync(ytCookiesJsonPath, 'utf8'));
+
+        /** @type {import('@distube/youtube').YouTubePluginOptions} */
+        const ytOptions = {
+            cookies: youtubeCookies,
+        }
+        const ytPlugin = new YouTubePlugin(ytOptions);
 		this.distube = new DisTube(this.client, {
-			leaveOnFinish: true,
-			leaveOnStop: true,
-			leaveOnEmpty: true,
+            plugins: [ytPlugin]
 		});
 		this.loadDistubeAssets();
 
@@ -166,6 +180,27 @@ class InitSequence {
 				);
 			}
 		});
+
+        /**
+         * Leaves voice channel when it's empty
+         * @param {import('discord.js').VoiceState} oldState - previous voice state
+         */
+        this.client.on('voiceStateUpdate', oldState => {
+            if (!oldState?.channel) return;
+            const voiceChannel = this.distube.voices.get(oldState);
+
+            if (voiceChannel && isVoiceChannelEmpty(oldState)) {
+                voiceChannel.leave();
+            }
+        });
+
+        /**
+         * Leaves voice channel once the queue is empty
+         * @param {import('distube').Queue} queue - Current song queue
+         */
+        this.distube.on('finish', queue => {
+            queue.voice.leave();
+        });
 	}
 
 	/**
